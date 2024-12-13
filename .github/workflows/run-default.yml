@@ -102,8 +102,9 @@ jobs:
     - name: Get packages
       shell: bash  # Specify the shell explicitly
       run: |
-           ls dependencies/*
-           ls run/*
+           ls -al dependencies/
+           echo "Run directory:"
+           ls -al run/*
            sudo apt-get update
            echo "INFO: Installing the ${{ matrix.compiler.name }} compiler with packages: ${{ matrix.compiler.packages }}"
              sudo apt-get install -y ${{ matrix.compiler.packages }}
