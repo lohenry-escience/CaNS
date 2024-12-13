@@ -77,7 +77,7 @@ jobs:
               name: "FFTW3"
             compiler: "NVIDIA"
       fail-fast: false #Ensures that jobs run in parallel
-    needs: build-GNU-Default
+    needs: build
     name: test-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}-${{ matrix.test-name }}
     steps:
     - name: Getting CaNS
