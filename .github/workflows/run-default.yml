@@ -21,10 +21,10 @@ jobs:
           flags: ""
         - name: "FFTW3"
           flags: "FFLAGS+=-fopenmp LIBS+=-lfftw3_threads"
-      exclude:
-        - compiler_flags:
-            name: "FFTW3"
-          compiler: "NVIDIA"
+        exclude:
+          - compiler_flags:
+              name: "FFTW3"
+            compiler: "NVIDIA"
       fail-fast: false #Ensures that jobs run in parallel
     name: build-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}
     outputs:
@@ -72,12 +72,12 @@ jobs:
           flags: ""
         - name: "FFTW3"
           flags: "FFLAGS+=-fopenmp LIBS+=-lfftw3_threads"
-      exclude:
-        - compiler_flags:
-            name: "FFTW3"
-          compiler: "NVIDIA"
+        exclude:
+          - compiler_flags:
+              name: "FFTW3"
+            compiler: "NVIDIA"
       fail-fast: false #Ensures that jobs run in parallel
-      #needs: build-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}
+      needs: build
     name: test-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}-${{ matrix.test-name }}
     steps:
     - name: Getting CaNS
