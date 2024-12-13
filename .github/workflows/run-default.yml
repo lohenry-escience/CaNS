@@ -24,7 +24,8 @@ jobs:
         exclude:
           - compiler_flags:
               name: "FFTW3"
-            compiler: "NVIDIA"
+            compiler:
+              name: "NVIDIA"
       fail-fast: false #Ensures that jobs run in parallel
     name: build-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}
     outputs:
@@ -75,7 +76,8 @@ jobs:
         exclude:
           - compiler_flags:
               name: "FFTW3"
-            compiler: "NVIDIA"
+            compiler:
+              name: "NVIDIA"
       fail-fast: false #Ensures that jobs run in parallel
     needs: build
     name: test-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}-${{ matrix.test-name }}
