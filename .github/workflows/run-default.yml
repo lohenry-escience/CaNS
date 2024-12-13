@@ -56,7 +56,7 @@ jobs:
         path: run/cans
   test:
     timeout-minutes: 5
-    needs: build
+    needs: build-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
