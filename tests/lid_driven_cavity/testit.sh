@@ -1,19 +1,29 @@
 #!/bin/bash
+
+set -e # Exit immediately if any command fails
+
 TESTDIR=$(pwd)
 CANSDIR=$(pwd)/../..
 SRCDIR=$CANSDIR/src
 RUNDIR=$CANSDIR/run
 UTILSDIR=$CANSDIR/utils
-rm -rf $RUNDIR
-echo "Compiling ..."
+cd $RUNDIR
+ls -al
+chmod +x cans
+mkdir data
 sleep 2
-cd $CANSDIR && make allclean && make libs && make -j
-cp $TESTDIR/input.nml $RUNDIR && cd $RUNDIR
-echo "Running CaNS..."
+cp $TESTDIR/input.nml $RUNDIR
+echo "INFO: Running CaNS"
 sleep 2
-mpirun -n 4 --oversubscribe ./cans
-cp $TESTDIR/*.* data/ && cp $UTILSDIR/read_binary_data/python/read_single_field_binary.py $RUNDIR/data/ && cd $RUNDIR/data/
-echo "Running test..."
+mpirun -n 4 --oversubscribe ./cans 1> log_file.log || { echo "CaNS execution failed"; exit 1; }
+if [[ ! -f $TESTDIR/test.py ]]; then
+    echo "test.py not found in $TESTDIR"
+    exit 1
+fi
+
+cp $TESTDIR/*.* ./ && cp $UTILSDIR/read_binary_data/python/read_single_field_binary.py ./ && cp $UTILSDIR/log_processing/python/process_log.py ./
+python process_log.py
+echo "INFO: Running comparison to a reference"
 sleep 2
-pytest test.py
+pytest test.py || { echo "pytest failed"; exit 1; }
 rm -rf $RUNDIR/data/*.*
