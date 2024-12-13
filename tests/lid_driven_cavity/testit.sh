@@ -10,7 +10,7 @@ UTILSDIR=$CANSDIR/utils
 cd $RUNDIR
 ls -al
 chmod +x cans
-mkdir data
+mkdir -p data
 sleep 2
 cp $TESTDIR/input.nml $RUNDIR
 echo "INFO: Running CaNS"
