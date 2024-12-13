@@ -133,7 +133,7 @@ jobs:
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: logs-${{ job.name }}
+        name: logs-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}-${{ matrix.test-name }}
         path: run/*log
     - name: Print log(s)
       shell: bash  # Specify the shell explicitly
