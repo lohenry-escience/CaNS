@@ -76,11 +76,11 @@ jobs:
           flags: ""
         - name: "FFTW3"
           flags: "FFLAGS+=-fopenmp LIBS+=-lfftw3_threads"
-        exclude:
-          - compiler_flags:
-              name: "FFTW3"
-            compiler:
-              name: "NVIDIA"
+      exclude:
+        - compiler_flags:
+            name: "FFTW3"
+          compiler:
+            name: "NVIDIA"
       fail-fast: false #Ensures that jobs run in parallel
     needs: build
     name: test-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}-${{ matrix.test-name }}
