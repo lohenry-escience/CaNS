@@ -56,7 +56,6 @@ jobs:
         path: run/cans
   test:
     timeout-minutes: 5
-    needs: build-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -74,6 +73,7 @@ jobs:
               name: "FFTW3"
             compiler: "NVIDIA"
       fail-fast: false #Ensures that jobs run in parallel
+    needs: build-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}
     name: test-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}-${{ matrix.test-name }}
     steps:
     - name: Getting CaNS
