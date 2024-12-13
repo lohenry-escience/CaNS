@@ -34,17 +34,6 @@ jobs:
            sudo apt-get update
            echo "INFO: Installing the {{ $matrix.compiler.name }} compiler with packages: {{ $matrix.compiler.packages }}"
            sudo apt-get install -y {{ $matrix.compiler.packages }}
-	   if [ "${{ matrix.compiler.name }}" = "NVIDIA" ]
-           then
-             echo "INFO: NVIDIA requests a specific download"
-             wget https://developer.download.nvidia.com/hpc-sdk/nvhpc_{{ $matrix.compiler.version }}_Linux_x86_64.tar.gz
-             tar -xzf nvhpc_{{ $matrix.compiler.version }}_Linux_x86_64.tar.gz
-             rm nvhpc_{{ $matrix.compiler.version }}_Linux_x86_64.tar.gz
-             cd nvhpc_{{ $matrix.compiler.version }}_Linux_x86_64
-             ./install --silent --accept-license --components=nvc,nvfortran
-             #docker pull nvcr.io/nvidia/nvhpc:{{ $matrix.compiler.version }}-devel
-             #docker run -it --rm nvcr.io/nvidia/nvhpc:{{ $matrix.compiler.version }}-devel
-           fi
     - name: Getting CaNS
       uses: actions/checkout@v4
       with:
