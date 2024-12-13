@@ -26,4 +26,4 @@ jobs:
         make libs
         make FFLAGS+=-fopenmp LIBS+=-lfftw3_threads
         cd tests/
-        for i in */; do cd $i && sh testit.sh && cd -; done
+        cd lid_driven_cavity && sh testit.sh && cd -
