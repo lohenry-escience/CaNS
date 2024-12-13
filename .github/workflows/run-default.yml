@@ -32,8 +32,8 @@ jobs:
       shell: bash  # Specify the shell explicitly
       run: |
            sudo apt-get update
-           echo "INFO: Installing the {{ $matrix.compiler.name }} compiler with packages: {{ $matrix.compiler.packages }}"
-           sudo apt-get install -y {{ $matrix.compiler.packages }}
+           echo "INFO: Installing the ${{ matrix.compiler.name }} compiler with packages: ${{ matrix.compiler.packages }}"
+           sudo apt-get install -y ${{ matrix.compiler.packages }}
     - name: Getting CaNS
       uses: actions/checkout@v4
       with:
@@ -44,15 +44,15 @@ jobs:
     - name: Upload compiled dependencies
       uses: actions/upload-artifact@v4
       with:
-        name: compiled-libs-{{ $matrix.compiler.name }}-{{ $matrix.compiler_flags.name }}
+        name: compiled-libs-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}
         path: dependencies/
     - name: Compile CaNS
       run: |
-        make FCOMP={{ $matrix.compiler.name }} {{ $matrix.compiler_flags.flags }}
+        make FCOMP=${{ matrix.compiler.name }} ${{ matrix.compiler_flags.flags }}
     - name: Upload CaNS
       uses: actions/upload-artifact@v4
       with:
-        name: cans-{{ $matrix.compiler.name }}-{{ $matrix.compiler_flags.name }}
+        name: cans-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}
         path: run/cans
   test:
     timeout-minutes: 5
@@ -83,12 +83,12 @@ jobs:
     - name: Getting compiled libraries
       uses: actions/download-artifact@v4
       with:
-        name: compiled-libs-{{ $matrix.compiler.name }}-{{ $matrix.compiler_flags.name }}
+        name: compiled-libs-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}
         path: dependencies/
     - name: Getting compiled CaNS
       uses: actions/download-artifact@v4
       with:
-        name: cans-{{ $matrix.compiler.name }}-{{ $matrix.compiler_flags.name }}
+        name: cans-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}
         path: run/
     - name: Get packages
       shell: bash  # Specify the shell explicitly
