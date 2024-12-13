@@ -1,0 +1,154 @@
+name: run-default
+
+on:
+  - pull_request
+  - push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      matrix:
+        compiler:
+        - name: GNU
+          packages: "gfortran libopenmpi-dev libfftw3-dev"
+        - name: NVIDIA
+          packages: "libopenmpi-dev libfftw3-dev"
+          version: "24.11" 
+        compiler_flags:
+        - name: "Default"
+          flags: ""
+        - name: "FFTW3"
+          flags: "FFLAGS+=-fopenmp LIBS+=-lfftw3_threads"
+        exclude:
+          - compiler_flags:
+              name: "FFTW3"
+            compiler: "NVIDIA"
+      fail-fast: false #Ensures that jobs run in parallel
+    name: build-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}
+    steps:
+    - name: Get packages
+      shell: bash  # Specify the shell explicitly
+      run: |
+           sudo apt-get update
+           echo "INFO: Installing the {{ $matrix.compiler.name }} compiler with packages: {{ $matrix.compiler.packages }}"
+           sudo apt-get install -y {{ $matrix.compiler.packages }}
+	   if [ "${{ matrix.compiler.name }}" = "NVIDIA" ]
+           then
+             echo "INFO: NVIDIA requests a specific download"
+             wget https://developer.download.nvidia.com/hpc-sdk/nvhpc_{{ $matrix.compiler.version }}_Linux_x86_64.tar.gz
+             tar -xzf nvhpc_{{ $matrix.compiler.version }}_Linux_x86_64.tar.gz
+             rm nvhpc_{{ $matrix.compiler.version }}_Linux_x86_64.tar.gz
+             cd nvhpc_{{ $matrix.compiler.version }}_Linux_x86_64
+             ./install --silent --accept-license --components=nvc,nvfortran
+             #docker pull nvcr.io/nvidia/nvhpc:{{ $matrix.compiler.version }}-devel
+             #docker run -it --rm nvcr.io/nvidia/nvhpc:{{ $matrix.compiler.version }}-devel
+           fi
+    - name: Getting CaNS
+      uses: actions/checkout@v4
+      with:
+        submodules: true
+    - name: Compile dependencies
+      run: |
+        make libs
+    - name: Upload compiled dependencies
+      uses: actions/upload-artifact@v4
+      with:
+        name: compiled-libs-{{ $matrix.compiler.name }}-{{ $matrix.compiler_flags.name }}
+        path: dependencies/
+    - name: Compile CaNS
+      run: |
+        make FCOMP={{ $matrix.compiler.name }} {{ $matrix.compiler_flags.flags }}
+    - name: Upload CaNS
+      uses: actions/upload-artifact@v4
+      with:
+        name: cans-{{ $matrix.compiler.name }}-{{ $matrix.compiler_flags.name }}
+        path: run/cans
+  test:
+    timeout-minutes: 5
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        test-name: [lid_driven_cavity, start_stop]
+        compiler:
+        - name: GNU
+          packages: "gfortran libopenmpi-dev libfftw3-dev"
+        compiler_flags:
+        - name: "Default"
+          flags: ""
+        - name: "FFTW3"
+          flags: "FFLAGS+=-fopenmp LIBS+=-lfftw3_threads"
+        exclude:
+          - compiler_flags:
+              name: "FFTW3"
+            compiler: "NVIDIA"
+      fail-fast: false #Ensures that jobs run in parallel
+    name: test-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}-${{ matrix.test-name }}
+    steps:
+    - name: Getting CaNS
+      uses: actions/checkout@v4
+      with:
+        submodules: false
+    - name: Getting compiled libraries
+      uses: actions/download-artifact@v4
+      with:
+        name: compiled-libs-{{ $matrix.compiler.name }}-{{ $matrix.compiler_flags.name }}
+        path: dependencies/
+    - name: Getting compiled CaNS
+      uses: actions/download-artifact@v4
+      with:
+        name: cans-{{ $matrix.compiler.name }}-{{ $matrix.compiler_flags.name }}
+        path: run/
+    - name: Get packages
+      shell: bash  # Specify the shell explicitly
+      run: |
+           sudo apt-get update
+           echo "INFO: Installing the {{ $matrix.compiler.name }} compiler with packages: {{ $matrix.compiler.packages }}"
+             sudo apt-get install -y {{ $matrix.compiler.packages }}
+    - name: Get Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Get Python packages for testing
+      if: ${{ inputs.python == 'true' }}
+      shell: bash  # Specify the shell explicitly
+      run: |
+        python -m pip install --upgrade pip
+        pip install numpy flake8 pytest f90nml
+    - name: Run the test
+      shell: bash  # Specify the shell explicitly
+      continue-on-error: true # Ensures the workflow continues
+      run: |
+           chmod +x ./run/cans
+           cd tests/${{ matrix.test-name }}
+           source ./testit.sh
+    - name: Set job output if test failed
+      run: |
+           echo "Setting job result..."
+           if [ $? -ne 0 ]; then
+             echo "test-failed=true" >> $GITHUB_ENV
+           fi
+      if: always()
+    - name: Upload log files
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: logs-${{ job.name }}
+        path: run/*log
+    - name: Print log(s)
+      shell: bash  # Specify the shell explicitly
+      run: |
+           for f in $(ls run/*log)
+           do
+             echo "Printing the log file "$f
+             cat $f
+           done
+    - name: Fail the job if the test failed
+      run: |
+        if [ "$test_failed" == "true" ]; then
+          echo "The test failed, marking job as failed."
+          exit 1
+        fi
+      if: env.test_failed == 'true'
