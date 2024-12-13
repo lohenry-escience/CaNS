@@ -17,8 +17,8 @@ jobs:
         #  packages: "libopenmpi-dev libfftw3-dev"
         #  version: "24.11" 
         compiler_flags:
-        - name: "Default"
-          flags: ""
+        #- name: "Default"
+        #  flags: ""
         - name: "FFTW3"
           flags: "FFLAGS+=-fopenmp LIBS+=-lfftw3_threads"
         exclude:
