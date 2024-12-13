@@ -25,5 +25,6 @@ jobs:
       run: |
         make libs
         make FFLAGS+=-fopenmp LIBS+=-lfftw3_threads
+        ls -al run/
         cd tests/
         cd lid_driven_cavity && sh testit.sh && cd -
