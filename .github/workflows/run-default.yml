@@ -13,9 +13,9 @@ jobs:
         compiler:
         - name: GNU
           packages: "gfortran libopenmpi-dev libfftw3-dev"
-        - name: NVIDIA
-          packages: "libopenmpi-dev libfftw3-dev"
-          version: "24.11" 
+        #- name: NVIDIA
+        #  packages: "libopenmpi-dev libfftw3-dev"
+        #  version: "24.11" 
         compiler_flags:
         - name: "Default"
           flags: ""
@@ -68,7 +68,10 @@ jobs:
         compiler:
         - name: GNU
           packages: "gfortran libopenmpi-dev libfftw3-dev"
-        compiler_flags:
+        - name: NVIDIA
+          packages: "libopenmpi-dev libfftw3-dev"
+          version: "24.11" 
+       compiler_flags:
         - name: "Default"
           flags: ""
         - name: "FFTW3"
