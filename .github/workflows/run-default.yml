@@ -70,7 +70,10 @@ jobs:
         path: dependencies/
     - name: Compile CaNS
       run: |
-        make FCOMP=${{ matrix.compiler.name }} ${{ matrix.compiler_flags.flags }}
+           source . ${HOME}/software/intel/oneapi/setvars.sh
+           ifx --version
+           mpiifort --version
+           make FCOMP=${{ matrix.compiler.name }} ${{ matrix.compiler_flags.flags }}
     - name: Upload CaNS
       uses: actions/upload-artifact@v4
       with:
