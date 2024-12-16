@@ -11,11 +11,11 @@ jobs:
     strategy:
       matrix:
         compiler:
-        - name: GNU
-          packages: "gfortran libopenmpi-dev libfftw3-dev"
-        #- name: NVIDIA
-        #  packages: "libopenmpi-dev libfftw3-dev"
-        #  version: "24.11"
+        #- name: GNU
+        #  packages: "gfortran libopenmpi-dev libfftw3-dev"
+        - name: NVIDIA
+          packages: "libopenmpi-dev libfftw3-dev"
+          version: "24.11"
         - name: INTEL
           packages: "gfortran libopenmpi-dev libfftw3-dev"
         compiler_flags:
@@ -53,6 +53,11 @@ jobs:
            then
            echo "Sourcing intel.sh"
            source ./intel2.sh
+           fi
+           if [ ${{ matrix.compiler.name }} == "NVIDIA" ]
+           then
+           echo "Sourcing nvidia.sh"
+           source ./nvidia.sh
            fi
            
     - name: Compile dependencies
