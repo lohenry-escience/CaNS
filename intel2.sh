@@ -6,7 +6,10 @@ wget --progress=dot:mega https://registrationcenter-download.intel.com/akdlm/IRC
 
 sh ./${INSTALL_SCRIPT} -a --silent --eula accept --install-dir ${INSTALL_DIR}; rm ${INSTALL_SCRIPT}
 echo "LoH: After download 1"
-#. ${HOME}/software/intel/oneapi/setvars.sh
+echo "===================="
+cat ${HOME}/software/intel/oneapi/setvars.sh
+echo "===================="
+. ${HOME}/software/intel/oneapi/setvars.sh
 du -hs $INSTALL_DIR
 
 rm -rf ${INSTALL_DIR}/documentation ${INSTALL_DIR}/samples
@@ -18,31 +21,12 @@ TOOLKIT=HPC
 VERSION=2024.0.0.49589
 INSTALL_SCRIPT=l_${TOOLKIT}Kit_p_${VERSION}_offline.sh
 wget --progress=dot:mega https://registrationcenter-download.intel.com/akdlm/IRC_NAS/1b2baedd-a757-4a79-8abb-a5bf15adae9a/${INSTALL_SCRIPT}
-sh ./${INSTALL_SCRIPT} -a --silent --eula accept --install-dir ${INSTALL_DIR} --components intel.oneapi.lin.ifort-compiler; rm ${INSTALL_SCRIPT}
+sh ./${INSTALL_SCRIPT} -a --silent --eula accept --install-dir ${INSTALL_DIR} --components intel.oneapi.lin.ifort-compiler intel.oneapi.lin.mpi; rm ${INSTALL_SCRIPT}
 #sh ./${INSTALL_SCRIPT} -a --silent --eula accept --install-dir ${INSTALL_DIR}; rm ${INSTALL_SCRIPT}
-
-echo "LoH: After NVIDIA"
-du -hs $INSTALL_DIR
-
-
-NVHPC_DIR=$HOME/software/nvidia/hpc_sdk
-YEAR=2024
-NVARCH=$(uname -s)_$(uname -m)
-COMPILER_PATH=$NVHPC_DIR/$NVARCH/$YEAR/compilers
-rm -rf $COMPILER_PATH/libacc* $COMPILER_PATH/libc++* $COMPILER_PATH/libcuda* $COMPILER_PATH/nvvm
-
-echo "LoH: After first cleanup"
-du -hs $INSTALL_DIR
-
-YEAR=2024
-NVHPC_INSTALL_DIR=$HOME/software/nvidia/hpc_sdk
-NVARCH=`uname -s`_`uname -m`; export NVARCH
-NVCOMPILERS=$NVHPC_INSTALL_DIR; export NVCOMPILERS
-
+ls $HOME/software/nvidia/hpc_sdk
 
 rm -rf ${INSTALL_DIR}/installercache ${INSTALL_DIR}/documentation
 rm -rf ${INSTALL_DIR}/documentation ${INSTALL_DIR}/samples
-rm -rf ${NVHPC_DIR}/Linux_*/*/doc ${NVHPC_DIR}/Linux_*/*/examples
 
 echo "LoH: After second cleanup"
 ls /home/runner/
