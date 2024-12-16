@@ -16,6 +16,9 @@ wget --no-verbose https://developer.download.nvidia.com/hpc-sdk/${NVVERSION_A}/n
 echo "LoH: After download 1"
 pwd
 du -hs *
+ls /home/runner
+du -hs /home/runner
+du -hs /home
 gzip -d nvhpc_${YEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}.tar.gz | tar -xvf
 echo "LoH: After unpacking"
 du -hs .
