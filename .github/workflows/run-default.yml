@@ -70,7 +70,7 @@ jobs:
         path: dependencies/
     - name: Compile CaNS
       run: |
-           source . ${HOME}/software/intel/oneapi/setvars.sh
+           source ${HOME}/software/intel/oneapi/setvars.sh
            ifx --version
            mpiifort --version
            make FCOMP=${{ matrix.compiler.name }} ${{ matrix.compiler_flags.flags }}
