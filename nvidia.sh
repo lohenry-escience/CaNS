@@ -10,10 +10,10 @@ NVVERSION_B=$(echo $NVVERSION_A | sed 's/\.//g')
 CUDA_VERSION=multi
 YEAR=2024
 NVARCH=`uname -s`_`uname -m`
-wget --progress=dot:mega https://developer.download.nvidia.com/hpc-sdk/${NVVERSION_A}/nvhpc_${YEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}.tar.gz
+wget --progress=dot:giga https://developer.download.nvidia.com/hpc-sdk/${NVVERSION_A}/nvhpc_${YEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}.tar.gz
 echo "LoH: After download 1"
 du -hs .
-tar xpzf nvhpc_${YEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}.tar.gz
+gzip -d nvhpc_${YEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}.tar.gz && tar -xvf nvhpc_${YEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}.tar --remove-files
 echo "LoH: After unpacking"
 du -hs .
 rm nvhpc_${YEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}.tar.gz
