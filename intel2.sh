@@ -45,19 +45,3 @@ rm -rf ${NVHPC_DIR}/Linux_*/*/doc ${NVHPC_DIR}/Linux_*/*/examples
 
 echo "LoH: After second cleanup"
 du -hs $INSTALL_DIR
-
-MANPATH=$MANPATH:$NVCOMPILERS/$NVARCH/$YEAR/compilers/man; export MANPATH
-PATH=$NVCOMPILERS/$NVARCH/$YEAR/compilers/bin:$PATH; export PATH
-
-export PATH=$NVCOMPILERS/$NVARCH/$YEAR/comm_libs/mpi/bin:$PATH
-export MANPATH=$MANPATH:$NVCOMPILERS/$NVARCH/$YEAR/mpi:$MANPATH
-export PATH=$NVCOMPILERS/$NVARCH/$YEAR/profilers/Nsight_Systems/bin:$PATH
-
-export LD_LIBRARY_PATH=$NVHPC_INSTALL_DIR/$NVARCH/$YEAR/compilers/lib:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=$NVHPC_INSTALL_DIR/$NVARCH/$YEAR/comm_libs/mpi/lib:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=$NVHPC_INSTALL_DIR/$NVARCH/$YEAR/math_libs/lib64:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=$NVHPC_INSTALL_DIR/$NVARCH/$YEAR/comm_libs/nccl/lib:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=$NVHPC_INSTALL_DIR/$NVARCH/$YEAR/comm_libs/nvshmem/lib:$LD_LIBRARY_PATH
-
-. ${HOME}/software/intel/oneapi/setvars.sh
-
