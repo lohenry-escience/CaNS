@@ -52,7 +52,7 @@ jobs:
            if [ ${{ matrix.compiler.name }} == "INTEL" ]
            then
            echo "Sourcing intel.sh"
-           source ./intel.sh
+           source ./intel2.sh
            fi
            
     - name: Compile dependencies
