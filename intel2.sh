@@ -48,5 +48,5 @@ du -hs $INSTALL_DIR
 
 #du -hs *
 #ls /home/runner
-#du -hs /home/runner
+du -hs /home/*
 #du -hs /home
