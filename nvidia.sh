@@ -14,11 +14,13 @@ YEAR=2024
 NVARCH=`uname -s`_`uname -m`
 wget --no-verbose https://developer.download.nvidia.com/hpc-sdk/${NVVERSION_A}/nvhpc_${YEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}.tar.gz
 echo "LoH: After download 1"
-pwd
-du -hs *
-ls /home/runner
 du -hs /home/runner
-du -hs /home
+du -hs /home/software
+ls /home/runner/
+ls /home/runner/work/CaNS
+ls /home/runner/work/CaNS/CaNS
+du -hs /home/*
+
 gzip -d nvhpc_${YEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}.tar.gz | tar -xvf
 echo "LoH: After unpacking"
 du -hs .
