@@ -1,15 +1,22 @@
-INSTALL_DIR=${HOME}/software/nvidia
-mkdir -p ${INSTALL_DIR}
-cd ${INSTALL_DIR}
-
-wget --progress=dot:mega  https://developer.download.nvidia.com/hpc-sdk/nvhpc_24.11_Linux_x86_64.tar.gz
+#!/bin/sh
+#
+# installs NVHPC SDK
+#
+export NVHPC_SILENT=true
+export NVHPC_INSTALL_TYPE=single
+export NVHPC_INSTALL_DIR=$HOME/software/nvidia/hpc_sdk
+NVVERSION_A=24.3
+NVVERSION_B=$(echo $NVVERSION_A | sed 's/\.//g')
+CUDA_VERSION=multi
+YEAR=2024
+NVARCH=`uname -s`_`uname -m`
+wget --progress=dot:mega https://developer.download.nvidia.com/hpc-sdk/${NVVERSION_A}/nvhpc_${YEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}.tar.gz
 echo "LoH: After download 1"
 du -hs .
-tar -xzf nvhpc_24.11_Linux_x86_64.tar.gz
+tar xpzf nvhpc_${YEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}.tar.gz
 echo "LoH: After unpacking"
 du -hs .
-rm nvhpc_24.11_Linux_x86_64.tar.gz
+rm nvhpc_${YEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}.tar.gz
 echo "LoH: After removal"
 du -hs .
-cd nvhpc_24.11_Linux_x86_64
-./install --silent --accept-license --components=nvc,nvfortran
+./nvhpc_${YEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}/install --silent --accept-license --components=nvc,nvfortran
