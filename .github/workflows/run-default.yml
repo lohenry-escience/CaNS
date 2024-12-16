@@ -118,12 +118,19 @@ jobs:
     - name: Get packages
       shell: bash  # Specify the shell explicitly
       run: |
-           ls -al dependencies/
-           echo "Run directory:"
-           ls -al run/*
            sudo apt-get update
            echo "INFO: Installing the ${{ matrix.compiler.name }} compiler with packages: ${{ matrix.compiler.packages }}"
-             sudo apt-get install -y ${{ matrix.compiler.packages }}
+           sudo apt-get install -y ${{ matrix.compiler.packages }}
+           if [ ${{ matrix.compiler.name }} == "INTEL" ]
+           then
+           echo "Sourcing intel.sh"
+           source ./intel2.sh
+           fi
+           if [ ${{ matrix.compiler.name }} == "NVIDIA" ]
+           then
+           echo "Sourcing nvidia.sh"
+           source ./nvidia.sh
+           fi
     - name: Get Python
       uses: actions/setup-python@v2
       with:
