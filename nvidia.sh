@@ -5,6 +5,8 @@
 export NVHPC_SILENT=true
 export NVHPC_INSTALL_TYPE=single
 export NVHPC_INSTALL_DIR=$HOME/software/nvidia/hpc_sdk
+mkdir -p ${NVHPC_INSTALL_DIR}
+cd ${NVHPC_INSTALL_DIR}
 NVVERSION_A=24.3
 NVVERSION_B=$(echo $NVVERSION_A | sed 's/\.//g')
 CUDA_VERSION=multi
