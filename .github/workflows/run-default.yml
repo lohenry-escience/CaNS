@@ -15,10 +15,12 @@ jobs:
           packages: "gfortran libopenmpi-dev libfftw3-dev"
         #- name: NVIDIA
         #  packages: "libopenmpi-dev libfftw3-dev"
-        #  version: "24.11" 
+        #  version: "24.11"
+        - name: INTEL
+          packages: "gfortran libopenmpi-dev libfftw3-dev"
         compiler_flags:
-        #- name: "Default"
-        #  flags: ""
+        - name: "Default"
+          flags: ""
         - name: "FFTW3"
           flags: "FFLAGS+=-fopenmp LIBS+=-lfftw3_threads"
         exclude:
@@ -26,6 +28,10 @@ jobs:
               name: "FFTW3"
             compiler:
               name: "NVIDIA"
+          - compiler_flags:
+              name: "FFTW3"
+            compiler:
+              name: "INTEL"
       fail-fast: false #Ensures that jobs run in parallel
     name: build-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}
     outputs:
@@ -33,16 +39,22 @@ jobs:
     steps:
     - name: Set build job output
       run: echo "build_name=build-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}" >> $GITHUB_OUTPUT
+    - name: Getting CaNS
+      uses: actions/checkout@v4
+      with:
+        submodules: true
     - name: Get packages
       shell: bash  # Specify the shell explicitly
       run: |
            sudo apt-get update
            echo "INFO: Installing the ${{ matrix.compiler.name }} compiler with packages: ${{ matrix.compiler.packages }}"
            sudo apt-get install -y ${{ matrix.compiler.packages }}
-    - name: Getting CaNS
-      uses: actions/checkout@v4
-      with:
-        submodules: true
+           if [ ${{ matrix.compiler.name }} == "INTEL" ]
+           then
+           echo "Sourcing intel.sh"
+           source ./intel.sh
+           fi
+           
     - name: Compile dependencies
       run: |
         make libs
@@ -72,15 +84,8 @@ jobs:
         #  packages: "libopenmpi-dev libfftw3-dev"
         #  version: "24.11" 
         compiler_flags:
-        #- name: "Default"
-        #  flags: ""
-        - name: "FFTW3"
-          flags: "FFLAGS+=-fopenmp LIBS+=-lfftw3_threads"
-        exclude:
-          - compiler_flags:
-              name: "FFTW3"
-            compiler:
-              name: "NVIDIA"
+        - name: "Default"
+          flags: ""
       fail-fast: false #Ensures that jobs run in parallel
     needs: build
     name: test-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}-${{ matrix.test-name }}
