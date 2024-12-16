@@ -6,7 +6,9 @@ wget --progress=dot:mega https://registrationcenter-download.intel.com/akdlm/IRC
 
 sh ./${INSTALL_SCRIPT} -a --silent --eula accept --install-dir ${INSTALL_DIR}; rm ${INSTALL_SCRIPT}
 echo "LoH: After download 1"
+. ${HOME}/software/intel/oneapi/setvars.sh
 du -hs $INSTALL_DIR
+
 rm -rf ${INSTALL_DIR}/documentation ${INSTALL_DIR}/samples
 
 echo "LoH: After INTEL"
