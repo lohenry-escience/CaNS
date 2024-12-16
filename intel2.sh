@@ -4,7 +4,8 @@ VERSION=2024.0.0.49564
 INSTALL_SCRIPT=l_${TOOLKIT}Kit_p_${VERSION}.sh
 wget https://registrationcenter-download.intel.com/akdlm/IRC_NAS/20f4e6a1-6b0b-4752-b8c1-e5eacba10e01/${INSTALL_SCRIPT}
 
-sh ./${INSTALL_SCRIPT} -a --silent --eula accept --install-dir ${INSTALL_DIR} --components intel-ifx; rm ${INSTALL_SCRIPT}
+sh ./${INSTALL_SCRIPT} --list-components
+sh ./${INSTALL_SCRIPT} -a --silent --eula accept --install-dir ${INSTALL_DIR} --components intel.oneapi.lin.ifx; rm ${INSTALL_SCRIPT}
 echo "LoH: After download 1"
 du -hs $INSTALL_DIR
 rm -rf ${INSTALL_DIR}/documentation ${INSTALL_DIR}/samples
