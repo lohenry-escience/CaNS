@@ -18,8 +18,8 @@ TOOLKIT=HPC
 VERSION=2024.0.0.49589
 INSTALL_SCRIPT=l_${TOOLKIT}Kit_p_${VERSION}_offline.sh
 wget --progress=dot:mega https://registrationcenter-download.intel.com/akdlm/IRC_NAS/1b2baedd-a757-4a79-8abb-a5bf15adae9a/${INSTALL_SCRIPT}
-#sh ./${INSTALL_SCRIPT} -a --silent --eula accept --install-dir ${INSTALL_DIR} --components intel.oneapi.lin.ifort-compiler; rm ${INSTALL_SCRIPT}
-sh ./${INSTALL_SCRIPT} -a --silent --eula accept --install-dir ${INSTALL_DIR}; rm ${INSTALL_SCRIPT}
+sh ./${INSTALL_SCRIPT} -a --silent --eula accept --install-dir ${INSTALL_DIR} --components intel.oneapi.lin.ifort-compiler; rm ${INSTALL_SCRIPT}
+#sh ./${INSTALL_SCRIPT} -a --silent --eula accept --install-dir ${INSTALL_DIR}; rm ${INSTALL_SCRIPT}
 
 echo "LoH: After NVIDIA"
 du -hs $INSTALL_DIR
@@ -53,3 +53,12 @@ du -hs /home/runner
 du -hs /home/runner/*
 
 ifx --version
+ls ${INSTALL_DIR}
+ls ${INSTALL_DIR}/mpi/latest
+unset NVCOMPILERS
+unset MANPATH
+unset PATH
+unset LD_LIBRARY_PATH
+source ${INSTALL_DIR}/setvars.sh
+
+mpiifort --version
