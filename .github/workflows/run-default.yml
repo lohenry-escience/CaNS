@@ -13,9 +13,9 @@ jobs:
         compiler:
         #- name: GNU
         #  packages: "gfortran libopenmpi-dev libfftw3-dev"
-        - name: NVIDIA
-          packages: "libopenmpi-dev libfftw3-dev"
-          version: "24.11"
+        #- name: NVIDIA
+        #  packages: "libopenmpi-dev libfftw3-dev"
+        #  version: "24.11"
         - name: INTEL
           packages: "gfortran libopenmpi-dev libfftw3-dev"
         compiler_flags:
@@ -62,7 +62,8 @@ jobs:
            
     - name: Compile dependencies
       run: |
-        make libs
+        source ${HOME}/software/intel/oneapi/setvars.sh
+        make libs FCOMP=INTEL
     - name: Upload compiled dependencies
       uses: actions/upload-artifact@v4
       with:
