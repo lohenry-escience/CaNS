@@ -89,6 +89,8 @@ jobs:
         compiler:
         - name: GNU
           packages: "gfortran libopenmpi-dev libfftw3-dev"
+        - name: INTEL
+          packages: "gfortran libopenmpi-dev libfftw3-dev"
         #- name: NVIDIA
         #  packages: "libopenmpi-dev libfftw3-dev"
         #  version: "24.11" 
