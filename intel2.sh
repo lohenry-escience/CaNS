@@ -44,13 +44,11 @@ rm -rf ${INSTALL_DIR}/documentation ${INSTALL_DIR}/samples
 rm -rf ${NVHPC_DIR}/Linux_*/*/doc ${NVHPC_DIR}/Linux_*/*/examples
 
 echo "LoH: After second cleanup"
-du -hs $INSTALL_DIR
-
-du -hs /home/runner
-du -hs /home/software
-du -hs /home/runner/work
 ls /home/runner/
 ls /home/runner/work/CaNS
 ls /home/runner/work/CaNS/CaNS
+
+du -hs /home/runner
+du -hs /home/runner/*
 
 ifx --version
