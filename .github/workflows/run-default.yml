@@ -11,13 +11,13 @@ jobs:
     strategy:
       matrix:
         compiler:
-        - name: GNU
-        - name: NVIDIA
-          version: "24.11"
-        - name: INTEL
+        #- name: GNU
+        #- name: NVIDIA
+        #  version: "24.11"
+        #- name: INTEL
         compiler_flags:
-        - name: "Default"
-          flags: ""
+        #- name: "Default"
+        #  flags: ""
         #- name: "FFTW3"
         #  flags: "FFLAGS+=-fopenmp LIBS+=-lfftw3_threads"
         exclude:
@@ -33,6 +33,7 @@ jobs:
     name: build-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}
     outputs:
       build-name: ${{ steps.set-output.outputs.build_name }}
+      build-${{ matrix.compiler.name }}: ${{ job.status }}
     steps:
     - name: Set build job output
       run: echo "build_name=build-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}" >> $GITHUB_OUTPUT
@@ -89,7 +90,7 @@ jobs:
         - name: "Default"
           flags: ""
       fail-fast: false #Ensures that jobs run in parallel
-    needs: build
+    #needs: build
     name: test-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}-${{ matrix.test-name }}
     steps:
     - name: Maximize build space
@@ -127,7 +128,6 @@ jobs:
       with:
         python-version: 3.8
     - name: Get Python packages for testing
-      if: ${{ inputs.python == 'true' }}
       shell: bash  # Specify the shell explicitly
       run: |
         python -m pip install --upgrade pip
