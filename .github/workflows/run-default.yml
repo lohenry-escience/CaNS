@@ -49,8 +49,8 @@ jobs:
            source ./tests/scripts/install-${{ matrix.compiler.name }}.sh
     - name: Compile dependencies
       run: |
-        source ${HOME}/software/intel/oneapi/setvars.sh
-        make libs FCOMP=INTEL
+           source ./tests/scripts/setenv-${{ matrix.compiler.name }}.sh
+           make libs FCOMP=${{ matrix.compiler.name }}
     - name: Upload compiled dependencies
       uses: actions/upload-artifact@v4
       with:
@@ -58,9 +58,7 @@ jobs:
         path: dependencies/
     - name: Compile CaNS
       run: |
-           source ${HOME}/software/intel/oneapi/setvars.sh
-           ifx --version
-           mpiifort --version
+           source ./tests/scripts/setenv-${{ matrix.compiler.name }}.sh
            make FCOMP=${{ matrix.compiler.name }} ${{ matrix.compiler_flags.flags }}
     - name: Upload CaNS
       uses: actions/upload-artifact@v4
