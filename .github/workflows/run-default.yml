@@ -12,9 +12,9 @@ jobs:
       matrix:
         compiler:
         - name: GNU
-        #- name: NVIDIA
-        #  version: "24.11"
-        #- name: INTEL
+          #- name: NVIDIA
+          #  version: "24.11"
+          #- name: INTEL
         compiler_flags:
         - name: "Default"
           flags: ""
