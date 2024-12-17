@@ -12,9 +12,9 @@ jobs:
       matrix:
         compiler:
         - name: GNU
-          #- name: NVIDIA
-          #  version: "24.11"
-          #- name: INTEL
+        - name: NVIDIA
+          version: "24.11"
+        - name: INTEL
         compiler_flags:
         - name: "Default"
           flags: ""
@@ -31,9 +31,9 @@ jobs:
               name: "INTEL"
       fail-fast: false #Ensures that jobs run in parallel
     name: build-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}
-    #outputs:
-    #build-name: ${{ steps.set-output.outputs.build_name }}
-    #build-${{ matrix.compiler.name }}: ${{ job.status }}
+    outputs:
+      build-name: ${{ steps.set-output.outputs.build_name }}
+      build-${{ matrix.compiler.name }}: ${{ job.status }}
     steps:
     - name: Set build job output
       run: echo "build_name=build-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}" >> $GITHUB_OUTPUT
@@ -90,7 +90,7 @@ jobs:
         - name: "Default"
           flags: ""
       fail-fast: false #Ensures that jobs run in parallel
-    #needs: build
+    needs: build
     name: test-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}-${{ matrix.test-name }}
     steps:
     - name: Maximize build space
@@ -122,7 +122,7 @@ jobs:
       run: |
            sudo apt-get update
            echo "INFO: Installing the ${{ matrix.compiler.name }} compiler"
-           source ./tests/scripts/install-${{ matrix.compiler.name }}.sh
+           sudo apt-get install libopenmpi-dev libfftw3-dev #source ./tests/scripts/install-${{ matrix.compiler.name }}.sh
     - name: Get Python
       uses: actions/setup-python@v2
       with:
