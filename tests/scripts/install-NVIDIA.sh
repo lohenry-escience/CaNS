@@ -62,6 +62,17 @@ df --output=avail -BG "."
 rm nvhpc_${NVYEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}.tar.gz
 pwd
 df --output=avail -BG "."
+
+echo "Memory and swap:"
+sudo free
+echo
+sudo swapon --show
+echo
+
+echo "Available storage:"
+sudo df -h
+echo
+
 echo "INFO: Installing now"
 df --output=avail -BG "/opt"
 ./nvhpc_${NVYEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}/install
