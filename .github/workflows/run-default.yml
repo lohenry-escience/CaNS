@@ -2,7 +2,7 @@ name: run-default
 
 on:
   - pull_request
-  #  - push
+  - push
 
 jobs:
   build:
@@ -12,9 +12,8 @@ jobs:
       matrix:
         compiler:
         - name: GNU
-        #- name: NVIDIA
-        #  packages: "libopenmpi-dev libfftw3-dev"
-        #  version: "24.11"
+        - name: NVIDIA
+          version: "24.11"
         - name: INTEL
         compiler_flags:
         - name: "Default"
