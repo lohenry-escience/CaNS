@@ -149,11 +149,16 @@ def classifyTimings(timings, nml_info, start_end_veto=1):
 
 if __name__ == "__main__":
     print("INFO: Print average info for testing purposes")
-    timings = getAllTimings("log_file.log")
-    divs    = getDivergences("log_file.log")
-    dts     = getDts        ("log_file.log")
-    nml     = readInputFile("input.nml")
-    class_timings = classifyTimings(timings,nml)
+    try:
+        timings = getAllTimings("log_file.log")
+        divs    = getDivergences("log_file.log")
+        dts     = getDts        ("log_file.log")
+        nml     = readInputFile("input.nml")
+        class_timings = classifyTimings(timings,nml)
+    except:
+        print("ERROR processing the timings/divs/dts, printing the file")
+        os.system("cat log_file.og")
+        return 1
     # Print the timings
     print("======================")
     print("Timing information")
