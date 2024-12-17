@@ -36,10 +36,6 @@ jobs:
     steps:
     - name: Set build job output
       run: echo "build_name=build-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}" >> $GITHUB_OUTPUT
-    - name: Getting CaNS
-      uses: actions/checkout@v4
-      with:
-        submodules: true
     - name: Maximize build space
       uses: easimon/maximize-build-space@master
       with:
@@ -49,6 +45,10 @@ jobs:
         remove-haskell: 'true'
         remove-docker-images: 'true'
         remove-android: 'true'
+    - name: Getting CaNS
+      uses: actions/checkout@v4
+      with:
+        submodules: true
     - name: Get packages
       shell: bash  # Specify the shell explicitly
       run: |
