@@ -1,5 +1,5 @@
 # Use NVIDIA HPC SDK image
-FROM nvcr.io/nvidia/nvhpc:23.11
+FROM nvcr.io/nvidia/nvhpc:24.11-devel-cuda_multi-ubuntu22.04
 
 # Install gfortran
 RUN apt-get update && apt-get install -y gfortran libopenmpi-dev libfftw3-dev && rm -rf /var/lib/apt/lists/*
