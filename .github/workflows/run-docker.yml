@@ -28,7 +28,7 @@ jobs:
     - name: Build Docker image
       run: |
            lowername=$(echo ${{ matrix.compiler.name }} | tr '[:upper:]' '[:lower:]')
-           docker build -t ${lowername}-image -f Dockerfile.${{ matrix.compiler.name }} .
+           docker build -t ${lowername}-image -f tests/docker/Dockerfile.${{ matrix.compiler.name }} .
     - name: Run Docker container to compile code
       run: |
            lowername=$(echo ${{ matrix.compiler.name }} | tr '[:upper:]' '[:lower:]')	 
