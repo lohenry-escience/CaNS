@@ -15,10 +15,6 @@ mkdir data-oneStep data-twoSteps
 echo "INFO: Running CaNS (1-step)"
 mv input-oneStep.nml input.nml
 sleep 1
-which mpiexec
-mpiexec --version
-env | grep I_MPI
-
 mpirun -n 4 --oversubscribe ./cans 1> log_file.log 2> err_file.log || { echo "CaNS execution failed"; exit 1; }
 #python process_log.py
 mv log_file.log log_oneStep.log
