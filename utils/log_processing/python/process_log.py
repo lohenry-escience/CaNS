@@ -157,8 +157,8 @@ if __name__ == "__main__":
         class_timings = classifyTimings(timings,nml)
     except:
         print("ERROR processing the timings/divs/dts, printing the file")
-        os.system("cat log_file.og")
-        return 1
+        os.system("cat log_file.log")
+        exit(1)
     # Print the timings
     print("======================")
     print("Timing information")
