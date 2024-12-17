@@ -15,8 +15,8 @@ sleep 2
 cp $TESTDIR/input.nml $RUNDIR
 echo "INFO: Running CaNS"
 sleep 2
-mpirun -n 4 --oversubscribe ./cans 1> log_file.log 2> err_log.log || { echo "CaNS execution failed"; exit 1; }
-#mpirun -n 4 --oversubscribe ./cans || { echo "CaNS execution failed"; exit 1; }
+mpiexec ./cans 1> log_file.log 2> err_log.log || { echo "CaNS execution failed"; exit 1; }
+
 if [[ ! -f $TESTDIR/test.py ]]; then
     echo "test.py not found in $TESTDIR"
     exit 1

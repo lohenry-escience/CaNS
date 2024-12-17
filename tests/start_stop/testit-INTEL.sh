@@ -17,9 +17,11 @@ mv input-oneStep.nml input.nml
 sleep 1
 which mpiexec
 mpiexec --version
+which mpirun
+mpirun --version
 env | grep I_MPI
 
-mpirun -n 4 --oversubscribe ./cans 1> log_file.log 2> err_file.log || { echo "CaNS execution failed"; exit 1; }
+mpiexec ./cans 1> log_file.log 2> err_file.log || { echo "CaNS execution failed"; exit 1; }
 #python process_log.py
 mv log_file.log log_oneStep.log
 mv err_file.log err_oneStep.log
@@ -29,7 +31,7 @@ rm -rf data/*
 echo "INFO: Running CaNS (2-step, first part)"
 mv input-twoSteps-1.nml input.nml
 sleep 1
-mpirun -n 4 --oversubscribe ./cans 1> log_file.log 2> err_file.log  || { echo "CaNS execution failed"; exit 1; }
+mpiexec ./cans 1> log_file.log 2> err_file.log  || { echo "CaNS execution failed"; exit 1; }
 #python process_log.py
 mv log_file.log log_twoSteps_1.log
 mv err_file.log err_twoSteps_1.log
@@ -38,7 +40,7 @@ cp -r data/* data-twoSteps/
 echo "INFO: Running CaNS (2-step, second part)"
 mv input-twoSteps-2.nml input.nml
 sleep 1
-mpirun -n 4 --oversubscribe ./cans 1> log_file.log 2> err_file.log  || { echo "CaNS execution failed"; exit 1; }
+mpiexec ./cans 1> log_file.log 2> err_file.log  || { echo "CaNS execution failed"; exit 1; }
 #python process_log.py
 mv log_file.log log_twoSteps_2.log
 mv err_file.log err_twoSteps_2.log

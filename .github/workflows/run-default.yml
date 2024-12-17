@@ -155,7 +155,12 @@ jobs:
            source ./tests/scripts/setenv-${{ matrix.compiler.name }}.sh
            chmod +x ./run/cans
            cd tests/${{ matrix.test-name }}
+           if [ "${{ matrix.compiler.name }}" == "INTEL"]
+           then
+           source ./testit-INTEL.sh
+           else                      
            source ./testit.sh
+           fi
     - name: Upload log files
       uses: actions/upload-artifact@v4
       if: always()
