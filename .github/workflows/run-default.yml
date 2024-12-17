@@ -11,13 +11,11 @@ jobs:
     strategy:
       matrix:
         compiler:
-        #- name: GNU
-        #  packages: "gfortran libopenmpi-dev libfftw3-dev"
+        - name: GNU
         #- name: NVIDIA
         #  packages: "libopenmpi-dev libfftw3-dev"
         #  version: "24.11"
         - name: INTEL
-          packages: "gfortran libopenmpi-dev libfftw3-dev"
         compiler_flags:
         - name: "Default"
           flags: ""
@@ -47,19 +45,8 @@ jobs:
       shell: bash  # Specify the shell explicitly
       run: |
            sudo apt-get update
-           echo "INFO: Installing the ${{ matrix.compiler.name }} compiler with packages: ${{ matrix.compiler.packages }}"
-           sudo apt-get install -y ${{ matrix.compiler.packages }}
-           if [ ${{ matrix.compiler.name }} == "INTEL" ]
-           then
-           echo "Sourcing intel.sh"
-           source ./intel2.sh
-           fi
-           if [ ${{ matrix.compiler.name }} == "NVIDIA" ]
-           then
-           echo "Sourcing nvidia.sh"
-           source ./nvidia.sh
-           fi
-           
+           echo "INFO: Installing the ${{ matrix.compiler.name }} compiler"
+           source ./tests/scripts/install-${{ matrix.compiler.name }}           
     - name: Compile dependencies
       run: |
         source ${HOME}/software/intel/oneapi/setvars.sh
@@ -88,11 +75,8 @@ jobs:
         test-name: [lid_driven_cavity, start_stop]
         compiler:
         - name: GNU
-          packages: "gfortran libopenmpi-dev libfftw3-dev"
         - name: INTEL
-          packages: "gfortran libopenmpi-dev libfftw3-dev"
         #- name: NVIDIA
-        #  packages: "libopenmpi-dev libfftw3-dev"
         #  version: "24.11" 
         compiler_flags:
         - name: "Default"
@@ -119,18 +103,8 @@ jobs:
       shell: bash  # Specify the shell explicitly
       run: |
            sudo apt-get update
-           echo "INFO: Installing the ${{ matrix.compiler.name }} compiler with packages: ${{ matrix.compiler.packages }}"
-           sudo apt-get install -y ${{ matrix.compiler.packages }}
-           if [ ${{ matrix.compiler.name }} == "INTEL" ]
-           then
-           echo "Sourcing intel.sh"
-           source ./intel2.sh
-           fi
-           if [ ${{ matrix.compiler.name }} == "NVIDIA" ]
-           then
-           echo "Sourcing nvidia.sh"
-           source ./nvidia.sh
-           fi
+           echo "INFO: Installing the ${{ matrix.compiler.name }} compiler"
+           source ./tests/scripts/install-${{ matrix.compiler.name }}
     - name: Get Python
       uses: actions/setup-python@v2
       with:
