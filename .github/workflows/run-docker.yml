@@ -26,9 +26,13 @@ jobs:
       with:
         submodules: true
     - name: Build Docker image
-      run: docker build -t ${{ matrix.compiler.name }}-image -f Dockerfile.${{ matrix.compiler.name }} .
+      run: |
+           lowername=$(echo ${{ matrix.compiler.name }} | tr '[:upper:]' '[:lower:]')
+           docker build -t ${{ lowername }}-image -f Dockerfile.${{ matrix.compiler.name }} .
     - name: Run Docker container to compile code
-      run: docker run --rm -v ${{ github.workspace }}:/workspace ${{ matrix.compiler.name }}-image
+      run: |
+           lowername=$(echo ${{ matrix.compiler.name }} | tr '[:upper:]' '[:lower:]')	 
+           docker run --rm -v ${{ github.workspace }}:/workspace ${{ lowername }}-image
     - name: Upload compiled dependencies
       uses: actions/upload-artifact@v4
       with:

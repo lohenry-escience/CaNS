@@ -2,7 +2,7 @@ name: run-default
 
 on:
   - pull_request
-  - push
+  #  - push
 
 jobs:
   build:
