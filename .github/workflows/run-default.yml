@@ -11,13 +11,13 @@ jobs:
     strategy:
       matrix:
         compiler:
-        #- name: GNU
+        - name: GNU
         #- name: NVIDIA
         #  version: "24.11"
         #- name: INTEL
         compiler_flags:
-        #- name: "Default"
-        #  flags: ""
+        - name: "Default"
+          flags: ""
         #- name: "FFTW3"
         #  flags: "FFLAGS+=-fopenmp LIBS+=-lfftw3_threads"
         exclude:
