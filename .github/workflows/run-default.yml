@@ -14,7 +14,10 @@ jobs:
         - name: GNU
         - name: NVIDIA
           version: "24.11"
+          year: 2024
         - name: INTEL
+          intel_version: 2024.0.0.49564
+          hpc_version: 2024.0.0.49589
         compiler_flags:
         - name: "Default"
           flags: ""
@@ -52,7 +55,15 @@ jobs:
       run: |
            sudo apt-get update
            echo "INFO: Installing the ${{ matrix.compiler.name }} compiler"
-           source ./tests/scripts/install-${{ matrix.compiler.name }}.sh
+           if [ ${{ matrix.compiler.name }} == "NVIDIA" ]
+           then
+             args="YEAR=${{ matrix.compiler.year }} VERSION=${{ matrix.compiler.version }}"
+           fi
+           if [ ${{ matrix.compiler.name }} == "INTEL" ]
+           then
+             args="INTEL_VERSION=${{ matrix.compiler.intel_version}} HPC_VERSION=${{ matrix.compile.hpc_version }}"
+           fi	   
+           source ./tests/scripts/install-${{ matrix.compiler.name }}.sh $args
     - name: Compile dependencies
       run: |
            source ./tests/scripts/setenv-${{ matrix.compiler.name }}.sh
@@ -120,7 +131,15 @@ jobs:
       run: |
            sudo apt-get update
            echo "INFO: Installing the ${{ matrix.compiler.name }} compiler"
-           source ./tests/scripts/install-${{ matrix.compiler.name }}.sh
+           if [ ${{ matrix.compiler.name }} == "NVIDIA" ]
+           then
+             args="YEAR=${{ matrix.compiler.year }} VERSION=${{ matrix.compiler.version }}"
+           fi
+           if [ ${{ matrix.compiler.name }} == "INTEL" ]
+           then
+             args="INTEL_VERSION=${{ matrix.compiler.intel_version}} HPC_VERSION=${{ matrix.compile.hpc_version }}"
+           fi	   
+           source ./tests/scripts/install-${{ matrix.compiler.name }}.sh $args
     - name: Get Python
       uses: actions/setup-python@v2
       with:
