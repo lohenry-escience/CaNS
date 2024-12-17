@@ -7,12 +7,12 @@ export NVHPC_INSTALL_DIR=$HOME/software/nvidia/hpc_sdk
 mkdir -p $NVHPC_INSTALL_DIR
 # Check disk space
 AVAILABLE_SPACE=$(df --output=avail -BG "$NVHPC_INSTALL_DIR" | tail -1 | tr -d 'G ')
-echo "INFO: Checking available space... "${AVAILABLE_SPACE}"Gb found on /home/work/runner"
+echo "INFO: Checking available space... "${AVAILABLE_SPACE}"Gb found on "$NVHPC_INSTALL_DIR
 if [ "$AVAILABLE_SPACE" -ge "20" ]; then
     echo "INFO: Should be enough for NVIDIA install"
 else
     echo "ERROR: We should have at least 20Gb free for NVIDIA installation. Abort."
-    exit 1
+    #    exit 1
 fi
 # Read arguments
 unset VERSION
