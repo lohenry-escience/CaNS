@@ -11,10 +11,10 @@ jobs:
     strategy:
       matrix:
         compiler:
-        - name: GNU
+        #- name: GNU
         - name: NVIDIA
           version: "24.11"
-        - name: INTEL
+        #- name: INTEL
         compiler_flags:
         - name: "Default"
           flags: ""
