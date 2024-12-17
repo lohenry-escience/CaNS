@@ -4,6 +4,10 @@
 #
 INSTALL_DIR=${HOME}/software/intel/oneapi
 #
+# Get packages
+#
+sudo apt-get install gfortran libopenmpi-dev libfftw3-dev
+#
 # base toolkit
 #
 TOOLKIT=Base
