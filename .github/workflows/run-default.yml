@@ -11,10 +11,10 @@ jobs:
     strategy:
       matrix:
         compiler:
-        #- name: GNU
+        - name: GNU
         - name: NVIDIA
           version: "24.11"
-        #- name: INTEL
+        - name: INTEL
         compiler_flags:
         - name: "Default"
           flags: ""
@@ -37,6 +37,7 @@ jobs:
     - name: Set build job output
       run: echo "build_name=build-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}" >> $GITHUB_OUTPUT
     - name: Maximize build space
+      # From https://github.com/marketplace/actions/maximize-build-disk-space
       uses: easimon/maximize-build-space@master
       with:
         root-reserve-mb: 25000
@@ -82,7 +83,7 @@ jobs:
         compiler:
         - name: GNU
         - name: INTEL
-        #- name: NVIDIA
+        - name: NVIDIA
         #  version: "24.11" 
         compiler_flags:
         - name: "Default"
@@ -91,6 +92,16 @@ jobs:
     needs: build
     name: test-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}-${{ matrix.test-name }}
     steps:
+    - name: Maximize build space
+      # From https://github.com/marketplace/actions/maximize-build-disk-space
+      uses: easimon/maximize-build-space@master
+      with:
+        root-reserve-mb: 25000
+        swap-size-mb: 30000
+        remove-dotnet: 'true'
+        remove-haskell: 'true'
+        remove-docker-images: 'true'
+        remove-android: 'true'
     - name: Getting CaNS
       uses: actions/checkout@v4
       with:
@@ -125,6 +136,7 @@ jobs:
       shell: bash  # Specify the shell explicitly
       continue-on-error: true # Ensures the workflow continues
       run: |
+           source ./tests/scripts/setenv-${{ matrix.compiler.name }}.sh
            chmod +x ./run/cans
            cd tests/${{ matrix.test-name }}
            source ./testit.sh
