@@ -31,9 +31,9 @@ jobs:
               name: "INTEL"
       fail-fast: false #Ensures that jobs run in parallel
     name: build-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}
-    outputs:
-      build-name: ${{ steps.set-output.outputs.build_name }}
-      build-${{ matrix.compiler.name }}: ${{ job.status }}
+    #outputs:
+    #build-name: ${{ steps.set-output.outputs.build_name }}
+    #build-${{ matrix.compiler.name }}: ${{ job.status }}
     steps:
     - name: Set build job output
       run: echo "build_name=build-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}" >> $GITHUB_OUTPUT
