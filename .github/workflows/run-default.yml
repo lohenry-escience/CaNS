@@ -155,10 +155,10 @@ jobs:
            source ./tests/scripts/setenv-${{ matrix.compiler.name }}.sh
            chmod +x ./run/cans
            cd tests/${{ matrix.test-name }}
-           if [ "${{ matrix.compiler.name }}" == "INTEL"]
+           if [ "${{ matrix.compiler.name }}" == "INTEL" ]
            then
            source ./testit-INTEL.sh
-           else                      
+           else
            source ./testit.sh
            fi
     - name: Upload log files
