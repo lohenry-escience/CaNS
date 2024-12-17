@@ -24,7 +24,7 @@ def getDivergences(log_file_path):
         for line_number, line in enumerate(log_file, start=1):
             line = line.strip()
             if "Total divergence" in line:
-                values["DivTot"].append(float(line.split()[4])) # The divergence is given by the 4th value
+                values["DivTot"].append(float(line.split()[3])) # The divergence is given by the 4th value
                 values["DivMax"].append(float(line.split()[-1])) # The divergence is given by the last value    
     return values
 
