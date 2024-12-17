@@ -1,0 +1,41 @@
+name: run-docker
+
+on:
+  - pull_request
+  - push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      matrix:
+        compiler:
+        - name: GNU
+        - name: INTEL
+        - name: NVIDIA
+      fail-fast: false #Ensures that jobs run in parallel
+    name: build-${{ matrix.compiler.name }}
+    outputs:
+      build-name: ${{ steps.set-output.outputs.build_name }}
+    steps:
+    - name: Set build job output
+      run: echo "build_name=build-${{ matrix.compiler.name }}" >> $GITHUB_OUTPUT
+    - name: Getting CaNS
+      uses: actions/checkout@v4
+      with:
+        submodules: true
+    - name: Build Docker image
+      run: docker build -t ${{ matrix.compiler.name }}-image -f Dockerfile.${{ matrix.compiler.name }} .
+    - name: Run Docker container to compile code
+      run: docker run --rm -v ${{ github.workspace }}:/workspace ${{ matrix.compiler.name }}-image
+    - name: Upload compiled dependencies
+      uses: actions/upload-artifact@v4
+      with:
+        name: compiled-libs-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}
+        path: dependencies/
+    - name: Upload CaNS
+      uses: actions/upload-artifact@v4
+      with:
+        name: cans-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}
+        path: run/cans
