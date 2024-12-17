@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # installs INTEL compiler
-# Usage: ./install-NVIDIA.sh [YEAR=YEAR] [VERSION=VERSION]
+# Usage: ./install-INTEL.sh [INTEL_VERSION=intel_version] [HPC_VERSION=hpc_version]
 #
 INSTALL_DIR=${HOME}/software/intel/oneapi
 #
@@ -9,8 +9,8 @@ INSTALL_DIR=${HOME}/software/intel/oneapi
 #
 sudo apt-get install gfortran libopenmpi-dev libfftw3-dev
 # Read arguments
-unset VERSION
-unset YEAR
+unset INTEL_VERSION
+unset HPC_VERSION
 for ARGUMENT in "$@"
 do
    KEY=$(echo $ARGUMENT | cut -f1 -d=)
