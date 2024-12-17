@@ -19,8 +19,8 @@ jobs:
         compiler_flags:
         - name: "Default"
           flags: ""
-        - name: "FFTW3"
-          flags: "FFLAGS+=-fopenmp LIBS+=-lfftw3_threads"
+        #- name: "FFTW3"
+        #  flags: "FFLAGS+=-fopenmp LIBS+=-lfftw3_threads"
         exclude:
           - compiler_flags:
               name: "FFTW3"
@@ -46,7 +46,7 @@ jobs:
       run: |
            sudo apt-get update
            echo "INFO: Installing the ${{ matrix.compiler.name }} compiler"
-           source ./tests/scripts/install-${{ matrix.compiler.name }}           
+           source ./tests/scripts/install-${{ matrix.compiler.name }}.sh
     - name: Compile dependencies
       run: |
         source ${HOME}/software/intel/oneapi/setvars.sh
@@ -104,7 +104,7 @@ jobs:
       run: |
            sudo apt-get update
            echo "INFO: Installing the ${{ matrix.compiler.name }} compiler"
-           source ./tests/scripts/install-${{ matrix.compiler.name }}
+           source ./tests/scripts/install-${{ matrix.compiler.name }}.sh
     - name: Get Python
       uses: actions/setup-python@v2
       with:
