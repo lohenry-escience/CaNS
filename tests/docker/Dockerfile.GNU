@@ -11,4 +11,4 @@ WORKDIR /workspace
 COPY . /workspace
 
 # Default command to compile your Fortran code
-CMD ["make libs && make"]
+CMD ["/bin/bash", "-c", "make libs && make"]
