@@ -52,5 +52,14 @@ fi
 NVVERSION_B=$(echo $NVVERSION_A | sed 's/\.//g')
 NVARCH=`uname -s`_`uname -m`
 wget --progress=dot:giga https://developer.download.nvidia.com/hpc-sdk/${NVVERSION_A}/nvhpc_${NVYEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}.tar.gz
+echo "INFO: Downloaded the file"
+pwd
+df --output=avail -BG "."
 tar xpzf nvhpc_${NVYEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}.tar.gz
+echo "INFO: Unpacked the file"
+pwd
+df --output=avail -BG "."
+rm nvhpc_${NVYEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}.tar.gz
+pwd
+df --output=avail -BG "."
 ./nvhpc_${NVYEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}/install
