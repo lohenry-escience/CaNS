@@ -3,8 +3,9 @@
 # installs NVHPC SDK
 # Usage: ./install-NVIDIA.sh [YEAR=YEAR] [VERSION=VERSION]
 #
+export NVHPC_INSTALL_DIR=$HOME/software/nvidia/hpc_sdk
 # Check disk space
-AVAILABLE_SPACE=$(df --output=avail -BG "/home/work/runner" | tail -1 | tr -d 'G ')
+AVAILABLE_SPACE=$(df --output=avail -BG "$NVHPC_INSTALL_DIR" | tail -1 | tr -d 'G ')
 echo "INFO: Checking available space... "${AVAILABLE_SPACE}"Gb found on /home/work/runner"
 if [ "$AVAILABLE_SPACE" -ge "20" ]; then
     echo "INFO: Should be enough for NVIDIA install"
@@ -31,7 +32,6 @@ sudo apt-get install gfortran libopenmpi-dev libfftw3-dev
 #
 export NVHPC_SILENT=true
 export NVHPC_INSTALL_TYPE=single
-export NVHPC_INSTALL_DIR=$HOME/software/nvidia/hpc_sdk
 NVVERSION_A=24.3 #default
 NVYEAR=2024 #default
 CUDA_VERSION=multi # default
