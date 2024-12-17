@@ -55,7 +55,7 @@ wget --progress=dot:giga https://developer.download.nvidia.com/hpc-sdk/${NVVERSI
 echo "INFO: Downloaded the file"
 pwd
 df --output=avail -BG "."
-tar xpzf nvhpc_${NVYEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}.tar.gz
+tar -xpzvf nvhpc_${NVYEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}.tar.gz
 echo "INFO: Unpacked the file"
 pwd
 df --output=avail -BG "."
