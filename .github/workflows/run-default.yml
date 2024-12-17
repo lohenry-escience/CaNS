@@ -34,6 +34,7 @@ jobs:
     steps:
     - name: Maximize build space
       # From https://github.com/marketplace/actions/maximize-build-disk-space
+      if: matrix.compiler.name == 'NVIDIA'
       uses: easimon/maximize-build-space@master
       with:
         root-reserve-mb: 25000
@@ -90,6 +91,8 @@ jobs:
     steps:
     - name: Maximize build space
       # From https://github.com/marketplace/actions/maximize-build-disk-space
+      # The important stuff is to resize the partitions. Removals do not do much, if anything
+      if: matrix.compiler.name == 'NVIDIA'
       uses: easimon/maximize-build-space@master
       with:
         root-reserve-mb: 25000
@@ -117,7 +120,7 @@ jobs:
       run: |
            sudo apt-get update
            echo "INFO: Installing the ${{ matrix.compiler.name }} compiler"
-           sudo apt-get install libopenmpi-dev libfftw3-dev #source ./tests/scripts/install-${{ matrix.compiler.name }}.sh
+           source ./tests/scripts/install-${{ matrix.compiler.name }}.sh
     - name: Get Python
       uses: actions/setup-python@v2
       with:
@@ -129,19 +132,11 @@ jobs:
         pip install numpy flake8 pytest f90nml
     - name: Run the test
       shell: bash  # Specify the shell explicitly
-      continue-on-error: true # Ensures the workflow continues
       run: |
            source ./tests/scripts/setenv-${{ matrix.compiler.name }}.sh
            chmod +x ./run/cans
            cd tests/${{ matrix.test-name }}
            source ./testit.sh
-    - name: Set job output if test failed
-      run: |
-           echo "Setting job result..."
-           if [ $? -ne 0 ]; then
-             echo "test-failed=true" >> $GITHUB_ENV
-           fi
-      if: always()
     - name: Upload log files
       uses: actions/upload-artifact@v4
       if: always()
@@ -156,10 +151,3 @@ jobs:
              echo "Printing the log file "$f
              cat $f
            done
-    - name: Fail the job if the test failed
-      run: |
-        if [ "$test_failed" == "true" ]; then
-          echo "The test failed, marking job as failed."
-          exit 1
-        fi
-      if: env.test_failed == 'true'
