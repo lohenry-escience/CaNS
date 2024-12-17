@@ -14,6 +14,7 @@ else
     echo "ERROR: We should have at least 20Gb free for NVIDIA installation. Abort."
     #    exit 1
 fi
+df --output=avail -BG "/home/runner"
 # Read arguments
 unset VERSION
 unset YEAR
