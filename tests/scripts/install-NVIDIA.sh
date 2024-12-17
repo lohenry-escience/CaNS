@@ -4,6 +4,7 @@
 # Usage: ./install-NVIDIA.sh [YEAR=YEAR] [VERSION=VERSION]
 #
 export NVHPC_INSTALL_DIR=$HOME/software/nvidia/hpc_sdk
+mkdir -p $NVHPC_INSTALL_DIR
 # Check disk space
 AVAILABLE_SPACE=$(df --output=avail -BG "$NVHPC_INSTALL_DIR" | tail -1 | tr -d 'G ')
 echo "INFO: Checking available space... "${AVAILABLE_SPACE}"Gb found on /home/work/runner"
