@@ -149,7 +149,9 @@ jobs:
       run: |
            export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:libs/
            source ./tests/scripts/setenv-${{ matrix.compiler.name }}.sh
+
            chmod +x ./run/cans
+           lddtree ./run/cans
            cd tests/${{ matrix.test-name }}
            if [ "${{ matrix.compiler.name }}" == "INTEL" ]
            then
