@@ -35,8 +35,12 @@ jobs:
       fail-fast: false #Ensures that jobs run in parallel
     name: build-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}
     steps:
+    # TODO: Lots of repetition here on setting up the environments.
     - name: Maximize build space
+      # TODO: make it local
       # From https://github.com/marketplace/actions/maximize-build-disk-space
+      # The important stuff is to resize the partitions. Removals do not do much, if anything
+      # Check if it works without the rm -f
       if: matrix.compiler.name == 'NVIDIA'
       uses: easimon/maximize-build-space@master
       with:
@@ -52,6 +56,7 @@ jobs:
         submodules: true
     - name: Get packages
       shell: bash  # Specify the shell explicitly
+      # TODO: avoid the if?
       run: |
            sudo apt-get update
            echo "INFO: Installing the ${{ matrix.compiler.name }} compiler"
@@ -77,6 +82,7 @@ jobs:
       run: |
            source ./tests/scripts/setenv-${{ matrix.compiler.name }}.sh
            make FCOMP=${{ matrix.compiler.name }} ${{ matrix.compiler_flags.flags }}
+           ldd run/cans
     - name: Upload CaNS
       uses: actions/upload-artifact@v4
       with:
