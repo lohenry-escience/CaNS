@@ -92,7 +92,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: needed-libs-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}
-        path: libraries.zip
+        path: libs/
   test:
     timeout-minutes: 20
     runs-on: ubuntu-latest
@@ -124,7 +124,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: needed-libs-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}
-        path: libraries.zip
+        path: libs/
     - name: Getting compiled CaNS
       uses: actions/download-artifact@v4
       with:
@@ -135,7 +135,6 @@ jobs:
       run: |
            sudo apt-get update
            sudo apt-get install libopenmpi-dev libfftw3-dev
-           unzip libraries.zip
     - name: Get Python
       uses: actions/setup-python@v2
       with:

@@ -1,6 +1,6 @@
-rm -rf libs
-mkdir libs
-ldd ./run/cans | awk '{print $3}' | grep -v '^$' | while read lib; do
+mkdir -p libs
+rm -rf libs/*
+lddtree ./run/cans | awk '{print $3}' | grep -v '^$' | while read lib; do
     cp -P "$lib" libs/
     # Resolve the real path if it's a symbolic link
     real_path=$(readlink -f "$lib")
@@ -10,6 +10,3 @@ ldd ./run/cans | awk '{print $3}' | grep -v '^$' | while read lib; do
     fi
 done
 chmod 755 libs/*
-rm libraries.zip
-rm libs/libc.so.*
-zip -r libraries libs/
