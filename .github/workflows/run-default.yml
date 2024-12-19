@@ -82,12 +82,17 @@ jobs:
       run: |
            source ./tests/scripts/setenv-${{ matrix.compiler.name }}.sh
            make FCOMP=${{ matrix.compiler.name }} ${{ matrix.compiler_flags.flags }}
-           ldd run/cans
+           source ./get_libs.sh
     - name: Upload CaNS
       uses: actions/upload-artifact@v4
       with:
         name: cans-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}
         path: run/cans
+    - name: Upload libs
+      uses: actions/upload-artifact@v4
+      with:
+        name: needed-libs-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}
+        path: libraries.zip
   test:
     timeout-minutes: 20
     runs-on: ubuntu-latest
@@ -106,18 +111,6 @@ jobs:
     needs: build
     name: test-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}-${{ matrix.test-name }}
     steps:
-    - name: Maximize build space
-      # From https://github.com/marketplace/actions/maximize-build-disk-space
-      # The important stuff is to resize the partitions. Removals do not do much, if anything
-      if: matrix.compiler.name == 'NVIDIA'
-      uses: easimon/maximize-build-space@master
-      with:
-        root-reserve-mb: 25000
-        swap-size-mb: 30000
-        remove-dotnet: 'true'
-        remove-haskell: 'true'
-        remove-docker-images: 'true'
-        remove-android: 'true'
     - name: Getting CaNS
       uses: actions/checkout@v4
       with:
@@ -127,6 +120,11 @@ jobs:
       with:
         name: compiled-libs-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}
         path: dependencies/
+    - name: Getting needed libraries
+      uses: actions/download-artifact@v4
+      with:
+        name: needed-libs-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}
+        path: libraries.zip
     - name: Getting compiled CaNS
       uses: actions/download-artifact@v4
       with:
@@ -136,16 +134,8 @@ jobs:
       shell: bash  # Specify the shell explicitly
       run: |
            sudo apt-get update
-           echo "INFO: Installing the ${{ matrix.compiler.name }} compiler"
-           if [ ${{ matrix.compiler.name }} == "NVIDIA" ]
-           then
-             args="YEAR=${{ matrix.compiler.year }} VERSION=${{ matrix.compiler.version }}"
-           fi
-           if [ ${{ matrix.compiler.name }} == "INTEL" ]
-           then
-             args="INTEL_VERSION=${{ matrix.compiler.intel_version}} HPC_VERSION=${{ matrix.compile.hpc_version }}"
-           fi	   
-           source ./tests/scripts/install-${{ matrix.compiler.name }}.sh $args
+           sudo apt-get install libopenmpi-dev libfftw3-dev
+           unzip libraries.zip
     - name: Get Python
       uses: actions/setup-python@v2
       with:
@@ -158,6 +148,7 @@ jobs:
     - name: Run the test
       shell: bash  # Specify the shell explicitly
       run: |
+           export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:libs/
            source ./tests/scripts/setenv-${{ matrix.compiler.name }}.sh
            chmod +x ./run/cans
            cd tests/${{ matrix.test-name }}
