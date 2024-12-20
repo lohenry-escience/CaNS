@@ -21,6 +21,8 @@ which mpirun
 mpirun --version
 env | grep I_MPI
 
+mpiexec ./cans
+
 mpiexec ./cans 1> log_file.log 2> err_file.log || { echo "CaNS execution failed"; exit 1; }
 #python process_log.py
 mv log_file.log log_oneStep.log
