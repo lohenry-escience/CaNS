@@ -147,11 +147,16 @@ jobs:
     - name: Run the test
       shell: bash  # Specify the shell explicitly
       run: |
-           export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:libs/
            source ./tests/scripts/setenv-${{ matrix.compiler.name }}.sh
-
+           export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:libs/
+           chmod u+rwx ./libs/*
            chmod +x ./run/cans
            lddtree ./run/cans
+           ls -l libs/libnvf.so
+           file libs/libnvf.so
+           file ./run/cans
+           ldd libs/libnvf.so
+           realpath libs/libnvf.so
            cd tests/${{ matrix.test-name }}
            if [ "${{ matrix.compiler.name }}" == "INTEL" ]
            then
