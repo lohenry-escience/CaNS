@@ -13,6 +13,8 @@ chmod +x cans
 mkdir data-oneStep data-twoSteps
 # Running 1 step
 echo "INFO: Running CaNS (1-step)"
+which mpirun
+mpirun --version
 mv input-oneStep.nml input.nml
 sleep 1
 mpirun -n 4 --oversubscribe ./cans

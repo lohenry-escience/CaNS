@@ -147,8 +147,8 @@ jobs:
     - name: Run the test
       shell: bash  # Specify the shell explicitly
       run: |
-           source ./tests/scripts/setenv-${{ matrix.compiler.name }}.sh
-           export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$(pwd)/libs/
+           #source ./tests/scripts/setenv-${{ matrix.compiler.name }}.sh
+           export LD_LIBRARY_PATH=$(pwd)/libs/:${LD_LIBRARY_PATH}
            chmod u+rwx ./libs/*
            chmod +x ./run/cans
            cd tests/${{ matrix.test-name }}
