@@ -18,7 +18,7 @@ ldd /usr/bin/mpirun
 mpirun --version
 mv input-oneStep.nml input.nml
 sleep 1
-mpirun -n 4 --oversubscribe env LD_LIBRARY_PATH=$(pwd)/libs:$LD_LIBRARY_PATH ./cans
+mpirun -n 4 --oversubscribe env LD_LIBRARY_PATH=$CANSDIR/libs:$LD_LIBRARY_PATH ./cans
 mpirun -n 4 --oversubscribe ./cans 1> log_file.log 2> err_file.log || { echo "CaNS execution failed"; exit 1; }
 #python process_log.py
 mv log_file.log log_oneStep.log
