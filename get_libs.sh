@@ -9,4 +9,5 @@ lddtree ./run/cans | awk '{print $3}' | tail -n +2 | grep -v '^$' | while read l
 	cp -v "$real_path" libs/
     fi
 done
+cp $(which mpirun) libs/
 chmod 755 libs/*
