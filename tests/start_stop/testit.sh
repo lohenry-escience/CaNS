@@ -14,6 +14,7 @@ mkdir data-oneStep data-twoSteps
 # Running 1 step
 echo "INFO: Running CaNS (1-step)"
 which mpirun
+ldd /usr/bin/mpirun
 mpirun --version
 mv input-oneStep.nml input.nml
 sleep 1

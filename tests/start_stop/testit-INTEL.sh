@@ -19,7 +19,8 @@ which mpiexec
 mpiexec --version
 which mpirun
 mpirun --version
-env | grep I_MPI
+which mpiexec
+mpiexec --version
 
 mpiexec ./cans
 
