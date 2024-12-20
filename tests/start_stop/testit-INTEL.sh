@@ -15,15 +15,8 @@ mkdir data-oneStep data-twoSteps
 echo "INFO: Running CaNS (1-step)"
 mv input-oneStep.nml input.nml
 sleep 1
-which mpiexec
-mpiexec --version
-which mpirun
-mpirun --version
-which mpiexec
-mpiexec --version
 
-mpiexec ./cans
-
+mpiexec env LD_LIBRARY_PATH=$(pwd)/libs:$LD_LIBRARY_PATH ./cans
 mpiexec ./cans 1> log_file.log 2> err_file.log || { echo "CaNS execution failed"; exit 1; }
 #python process_log.py
 mv log_file.log log_oneStep.log

@@ -151,8 +151,8 @@ jobs:
            which mpirun
            ldd /usr/bin/mpirun
            mpirun --version
-           export LD_LIBRARY_PATH=$(pwd)/libs/:${LD_LIBRARY_PATH}
-           echo ${LD_LIBRARY_PATH}
+           #export LD_LIBRARY_PATH=$(pwd)/libs/:${LD_LIBRARY_PATH}
+           #echo ${LD_LIBRARY_PATH}
            chmod u+rwx ./libs/*
            chmod +x ./run/cans
            cd tests/${{ matrix.test-name }}
