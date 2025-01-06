@@ -82,7 +82,6 @@ jobs:
       run: |
            source ./tests/scripts/setenv-${{ matrix.compiler.name }}.sh
            make FCOMP=${{ matrix.compiler.name }} ${{ matrix.compiler_flags.flags }}
-           ldd run/cans
     - name: Upload CaNS
       uses: actions/upload-artifact@v4
       with:
