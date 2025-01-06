@@ -17,14 +17,14 @@ echo "INFO: Running CaNS"
 sleep 2
 mpiexec ./cans
 
+echo "INFO: Running comparison to a reference"
 if [[ ! -f $TESTDIR/test.py ]]; then
-    echo "test.py not found in $TESTDIR"
+    echo "FATAL: test.py not found in $TESTDIR"
     exit 1
 fi
 
 cp $TESTDIR/*.* ./ && cp $UTILSDIR/read_binary_data/python/read_single_field_binary.py ./ && cp $UTILSDIR/log_processing/python/process_log.py ./
 #python process_log.py
-echo "INFO: Running comparison to a reference"
 sleep 2
-pytest test.py || { echo "pytest failed"; exit 1; }
+pytest test.py || { echo "ERROR: pytest failed"; exit 1; }
 rm -rf $RUNDIR/data/*.*
