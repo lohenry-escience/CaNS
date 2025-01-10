@@ -37,7 +37,7 @@ jobs:
       matrix:
         test-name: [lid_driven_cavity, start_stop]
         mode: [opt, dbg]
-    needs: build-GNU-${{ matrix.mode }}
+    #needs: build-GNU-${{ matrix.mode }}
     steps:
     - name: Check out actions
       uses: actions/checkout@v4
