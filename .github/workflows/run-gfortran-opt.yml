@@ -18,6 +18,6 @@ jobs:
       - name: Build CaNS
         uses: ./.github/actions/build
         with:
-          compiler: "${{compiler}}"
-          mode: "${{mode}}"
-          name: "${{compiler}}-${{mode}}"
+          compiler: "${{ env.compiler }}"
+          mode: "${{ env.mode }}"
+          name: "${{ env.compiler }}-${{ env.mode }}"
