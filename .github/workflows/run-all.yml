@@ -1,15 +1,12 @@
+
 name: test-GNU-opt
 
 on:
   - pull_request
   - push
 
-env:
-  compiler: 'GNU'
-  mode: 'opt'
-
 jobs:
-  build:
+  build-GNU-opt:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -18,16 +15,29 @@ jobs:
       - name: Build CaNS
         uses: ./.github/actions/build
         with:
-          compiler: "${{ env.compiler }}"
-          mode: "${{ env.mode }}"
-          name: "${{ env.compiler }}-${{ env.mode }}"
-  test:
+          compiler: GNU
+          mode: opt
+          name: build-GNU-opt
+  build-GNU-dbg:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out actions
+        uses: actions/checkout@v4
+      - name: Build CaNS
+        uses: ./.github/actions/build
+        with:
+          compiler: GNU
+          mode: dbg
+          name: build-GNU-dbg  
+  test-GNU-all:
     timeout-minutes: 20
     runs-on: ubuntu-latest
     strategy:
       matrix:
         test-name: [lid_driven_cavity, start_stop]
-    needs: build
+        mode: [opt, dbg]
+    needs: build-GNU-${{ matrix.mode }}
     steps:
       - name: Check out actions
         uses: actions/checkout@v4
@@ -50,7 +60,7 @@ jobs:
       - name: Run the test
        shell: bash  # Specify the shell explicitly
          run: |
-             source ./tests/scripts/setenv-${{ matrix.compiler.name }}.sh
+             source ./tests/scripts/setenv-GNU.sh
              chmod +x ./run/cans
              cd tests/${{ matrix.test-name }}
              if [ "${{ matrix.compiler.name }}" == "INTEL" ]
@@ -63,7 +73,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: logs-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}-${{ matrix.test-name }}
+          name: logs-GNU-{{ matrix.mode }}-{{ matrix.test-name }}
           path: run/*log
       - name: Print log(s)
         shell: bash  # Specify the shell explicitly
