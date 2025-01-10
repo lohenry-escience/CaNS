@@ -3,7 +3,7 @@ name: test-GNU-opt
 
 on:
   - pull_request
-#  - push
+  - push
 
 jobs:
   build-GNU-opt:
@@ -44,9 +44,9 @@ jobs:
       - name: Get CaNS and packages
         uses: ./.github/actions/build
         with:
-          compiler: "${{ env.compiler }}"
-          mode: "${{ env.mode }}"
-          name: "${{ env.compiler }}-${{ env.mode }}"
+          compiler: "GNU"
+          mode: "${{ matrix.mode }}"
+          name: "GNU-${{ matrix.mode }}"
           no-rebuild: true
       - name: Get Python
         uses: actions/setup-python@v2

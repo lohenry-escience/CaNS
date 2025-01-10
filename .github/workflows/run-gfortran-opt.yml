@@ -2,7 +2,7 @@ name: test-GNU-opt
 
 on:
   - pull_request
-  - push
+#  - push
 
 env:
   compiler: 'GNU'
@@ -21,55 +21,3 @@ jobs:
           compiler: "${{ env.compiler }}"
           mode: "${{ env.mode }}"
           name: "${{ env.compiler }}-${{ env.mode }}"
-  test:
-    timeout-minutes: 20
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        test-name: [lid_driven_cavity, start_stop]
-    needs: build
-    steps:
-      - name: Check out actions
-        uses: actions/checkout@v4
-      - name: Get CaNS and packages
-        uses: ./.github/actions/build
-        with:
-          compiler: "${{ env.compiler }}"
-          mode: "${{ env.mode }}"
-          name: "${{ env.compiler }}-${{ env.mode }}"
-          no-rebuild: true
-      - name: Get Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Get Python packages for testing
-        shell: bash  # Specify the shell explicitly
-        run: |
-          python -m pip install --upgrade pip
-          pip install numpy flake8 pytest f90nml
-      - name: Run the test
-       shell: bash  # Specify the shell explicitly
-         run: |
-             source ./tests/scripts/setenv-${{ matrix.compiler.name }}.sh
-             chmod +x ./run/cans
-             cd tests/${{ matrix.test-name }}
-             if [ "${{ matrix.compiler.name }}" == "INTEL" ]
-             then
-             source ./testit-INTEL.sh
-             else
-             source ./testit.sh
-             fi
-      - name: Upload log files
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: logs-${{ matrix.compiler.name }}-${{ matrix.compiler_flags.name }}-${{ matrix.test-name }}
-          path: run/*log
-      - name: Print log(s)
-        shell: bash  # Specify the shell explicitly
-        run: |
-             for f in $(ls run/*log)
-             do
-               echo "Printing the log file "$f
-               cat $f
-             done
