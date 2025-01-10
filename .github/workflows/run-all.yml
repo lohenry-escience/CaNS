@@ -37,49 +37,49 @@ jobs:
       matrix:
         test-name: [lid_driven_cavity, start_stop]
         mode: [opt, dbg]
-#    needs: build-GNU-${{ matrix.mode }}
+    needs: build-GNU-${{ matrix.mode }}
     steps:
-      - name: Check out actions
-        uses: actions/checkout@v4
-      - name: Get CaNS and packages
-        uses: ./.github/actions/build
-        with:
-          compiler: "GNU"
-          mode: "${{ matrix.mode }}"
-          name: "GNU-${{ matrix.mode }}"
-          no-rebuild: true
-      - name: Get Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Get Python packages for testing
-        shell: bash  # Specify the shell explicitly
-        run: |
-          python -m pip install --upgrade pip
-          pip install numpy flake8 pytest f90nml
-      - name: Run the test
-       shell: bash  # Specify the shell explicitly
-         run: |
-             source ./tests/scripts/setenv-GNU.sh
-             chmod +x ./run/cans
-             cd tests/${{ matrix.test-name }}
-             if [ "${{ matrix.compiler.name }}" == "INTEL" ]
-             then
-             source ./testit-INTEL.sh
-             else
-             source ./testit.sh
-             fi
-      - name: Upload log files
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: logs-GNU-{{ matrix.mode }}-{{ matrix.test-name }}
-          path: run/*log
-      - name: Print log(s)
-        shell: bash  # Specify the shell explicitly
-        run: |
-             for f in $(ls run/*log)
-             do
-               echo "Printing the log file "$f
-               cat $f
-             done
+    - name: Check out actions
+      uses: actions/checkout@v4
+    - name: Get CaNS and packages
+      uses: ./.github/actions/build
+      with:
+        compiler: "GNU"
+        mode: "${{ matrix.mode }}"
+        name: "GNU-${{ matrix.mode }}"
+        no-rebuild: true
+    - name: Get Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Get Python packages for testing
+      shell: bash  # Specify the shell explicitly
+      run: |
+        python -m pip install --upgrade pip
+        pip install numpy flake8 pytest f90nml
+    - name: Run the test
+     shell: bash  # Specify the shell explicitly
+       run: |
+           source ./tests/scripts/setenv-GNU.sh
+           chmod +x ./run/cans
+           cd tests/${{ matrix.test-name }}
+           if [ "${{ matrix.compiler.name }}" == "INTEL" ]
+           then
+           source ./testit-INTEL.sh
+           else
+           source ./testit.sh
+           fi
+    - name: Upload log files
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: logs-GNU-{{ matrix.mode }}-{{ matrix.test-name }}
+        path: run/*log
+    - name: Print log(s)
+      shell: bash  # Specify the shell explicitly
+      run: |
+           for f in $(ls run/*log)
+           do
+             echo "Printing the log file "$f
+             cat $f
+           done
