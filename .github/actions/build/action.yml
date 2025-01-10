@@ -57,7 +57,6 @@ runs:
         else
           args=""
         fi
-        ls tests/scripts/
         chmod a+x ./tests/scripts/install-${{ inputs.compiler }}.sh
         sudo ./tests/scripts/install-${{ inputs.compiler }}.sh $args
 
