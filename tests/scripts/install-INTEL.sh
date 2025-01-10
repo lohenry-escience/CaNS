@@ -3,8 +3,6 @@
 # installs INTEL compiler
 # Usage: ./install-INTEL.sh [INTEL_VERSION=intel_version] [HPC_VERSION=hpc_version]
 #
-INSTALL_DIR=${HOME}/software/intel/oneapi
-#
 # Get packages
 #
 sudo apt-get install gfortran libopenmpi-dev libfftw3-dev
@@ -19,8 +17,12 @@ echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt
 sudo apt update
 
 sudo apt install intel-oneapi-base-toolkit
-. /opt/intel/oneapi/setvars.sh
 sudo apt install intel-oneapi-hpc-toolkit
-#sudo apt install Intel-fortran-essentials
+sudo apt install intel-fortran-essentials
+. /opt/intel/oneapi/setvars.sh
 
+ls /opt/intel/oneapi/compiler/latest/bin/
 echo "Done"
+dpkg -l | grep intel-fortran
+ifort --version
+mpiifort --version
