@@ -12,7 +12,7 @@ jobs:
       - name: Check out actions
         uses: actions/checkout@v4
       - name: Build CaNS
-        uses: ./.github/actions/build-action
+        uses: ./.github/actions/build
         with:
           compiler: 'GNU'
           mode: 'opt'
