@@ -57,7 +57,7 @@ runs:
         else
           args=""
         fi
-        ./tests/scripts/install-${{ inputs.compiler }}.sh $args
+        sudo ./tests/scripts/install-${{ inputs.compiler }}.sh $args
 
     - name: Compile Dependencies
       shell: bash
@@ -75,7 +75,7 @@ runs:
     - name: Compile CaNS
       shell: bash
       run: |
-        source ./tests/scripts/setenv-${{ inputs.compiler }}.sh
+        sudo source ./tests/scripts/setenv-${{ inputs.compiler }}.sh
         # Add the debug flags       
         make FCOMP=${{ inputs.compiler }} ${{ inputs.compiler_flags }}
 
