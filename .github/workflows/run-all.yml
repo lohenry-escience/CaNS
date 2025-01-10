@@ -3,7 +3,7 @@ name: test-GNU-opt
 
 on:
   - pull_request
-  - push
+#  - push
 
 jobs:
   build-GNU-opt:
@@ -27,9 +27,9 @@ jobs:
       - name: Build CaNS
         uses: ./.github/actions/build
         with:
-          compiler: GNU
-          mode: dbg
-          name: build-GNU-dbg  
+          compiler: "GNU"
+          mode: "dbg"
+          name: "build-GNU-dbg"  
   test-GNU-all:
     timeout-minutes: 20
     runs-on: ubuntu-latest
