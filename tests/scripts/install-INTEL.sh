@@ -23,3 +23,4 @@ sudo apt install intel-oneapi-base-toolkit
 #sudo apt install Intel-fortran-essentials
 
 echo "Done"
+source /opt/intel/oneapi/setvars.sh

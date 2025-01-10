@@ -2,4 +2,4 @@
 #
 # Sets the proper variables for INTEL compilation
 #
-source ${HOME}/software/intel/oneapi/setvars.sh
+source /opt/intel/oneapi/setvars.sh
