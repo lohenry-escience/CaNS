@@ -8,7 +8,7 @@ inputs:
     description: "The compiler to use (e.g., GNU, NVIDIA, INTEL)."
     required: true
   mode:
-    description: "opt(imal) or d(e)b(u)g build
+    description: "opt(imal) or d(e)b(u)g build"
     required: true
   compiler_version:
     description: "The version of the compiler."
