@@ -1,0 +1,86 @@
+name: "Build and Test CaNS"
+description: "Compiles dependencies and the CaNS project for multiple compilers and flags."
+inputs:
+  name:
+    description: "Name of the build"
+    required: true
+  compiler:
+    description: "The compiler to use (e.g., GNU, NVIDIA, INTEL)."
+    required: true
+  mode:
+    description: "opt(imal) or d(e)b(u)g build
+    required: true
+  compiler_version:
+    description: "The version of the compiler."
+    required: false
+  compiler_year:
+    description: "The year of the compiler version (only for NVIDIA)."
+    required: false
+  compiler_flags:
+    description: "Flags to pass to the compiler."
+    required: false
+    default: ""
+  intel_version:
+    description: "The Intel compiler version (only for INTEL)."
+    required: false
+  hpc_version:
+    description: "The Intel HPC version (only for INTEL)."
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Maximize build space
+      if: ${{ inputs.compiler == 'NVIDIA' }}
+      uses: easimon/maximize-build-space@master
+      with:
+        root-reserve-mb: 25000
+        swap-size-mb: 30000
+        remove-dotnet: 'true'
+        remove-haskell: 'true'
+        remove-docker-images: 'true'
+        remove-android: 'true'
+
+    - name: Checkout Code
+      uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Install Compiler
+      shell: bash
+      run: |
+        echo "Installing compiler: ${{ inputs.compiler }}"
+        if [ "${{ inputs.compiler }}" == "NVIDIA" ]; then
+          args="YEAR=${{ inputs.compiler_year }} VERSION=${{ inputs.compiler_version }}"
+        elif [ "${{ inputs.compiler }}" == "INTEL" ]; then
+          args="INTEL_VERSION=${{ inputs.intel_version }} HPC_VERSION=${{ inputs.hpc_version }}"
+        else
+          args=""
+        fi
+        ./tests/scripts/install-${{ inputs.compiler }}.sh $args
+
+    - name: Compile Dependencies
+      shell: bash
+      run: |
+        source ./tests/scripts/setenv-${{ inputs.compiler }}.sh
+        # Add the debug flags       
+        make libs FCOMP=${{ inputs.compiler }}
+
+    - name: Upload Dependencies
+      uses: actions/upload-artifact@v4
+      with:
+        name: compiled-libs-${{ inputs.compiler }}
+        path: dependencies/
+
+    - name: Compile CaNS
+      shell: bash
+      run: |
+        source ./tests/scripts/setenv-${{ inputs.compiler }}.sh
+        # Add the debug flags       
+        make FCOMP=${{ inputs.compiler }} ${{ inputs.compiler_flags }}
+
+    - name: Upload CaNS Build
+      uses: actions/upload-artifact@v4
+      with:
+        name: cans-${{ inputs.name }}
+        path: run/cans

@@ -1,0 +1,17 @@
+name: test-GNU-opt
+
+on:
+  - pull_request
+  - push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: "build"
+        uses: ./.github/actions/build-action
+        with:
+          compiler: 'GNU'
+          mode: 'opt'
+          name: 'GNU-opt'
