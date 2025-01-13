@@ -8,7 +8,7 @@ env:
   FAST_MATRIX : >-
     {
       "compiler": [
-        { "name": "GNU" },
+        { "name": "GNU" }
       ],
       "mode": [
         { "name": "opt", "flags": "" },
