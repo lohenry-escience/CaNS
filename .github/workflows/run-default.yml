@@ -3,6 +3,7 @@ name: run-default
 on:
   - pull_request
   - push
+  - workflow_dispatch
 
 env:
   FAST_MATRIX : >-
