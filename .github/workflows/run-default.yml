@@ -32,13 +32,17 @@ jobs:
           STRATEGY=$(echo $COMPILER_MATRIX | jq -c '.')
 
           # Default to GNU for push-triggered workflows
-          if [ "${{ github.event_name }}" == "push" ]; then
+          if [ "${GITHUB_EVENT_NAME}" == "push" ]; then
             # If triggered by a push, only use the "GNU" compiler
             STRATEGY=$(echo "$STRATEGY" | jq '.compiler = [{"name": "GNU"}]')
           fi
 
           # Export the entire JSON as a single string for reuse
-          echo "::set-output name=matrix::$STRATEGY"
+          # Save the adjusted matrix to a file for output
+          echo "$STRATEGY" > matrix.json
+
+          # Export the matrix for other jobs
+          echo "matrix=$(cat matrix.json)" >> $GITHUB_ENV
           
           # Parse and print compilers and modes in Bash
           COMPILERS=$(echo $STRATEGY | jq -c '.compiler')
@@ -54,8 +58,8 @@ jobs:
     needs: parse-matrix
     strategy:
       matrix:
-        compiler: ${{ fromJson(needs.parse-matrix.outputs.compiler_matrix).compiler }}
-        mode: ${{ fromJson(needs.parse-matrix.outputs.compiler_matrix).mode }}
+        compiler: ${{ fromJson(env.matrix).compiler }}
+        mode: ${{ fromJson(env.matrix).mode }}
 
       fail-fast: false #Ensures that jobs run in parallel
     name: build-${{ matrix.compiler.name }}-${{ matrix.mode.name }}
@@ -117,10 +121,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-
+        compiler: ${{ fromJson(env.matrix).compiler }}
+        mode: ${{ fromJson(env.matrix).mode }}
         test-name: [lid_driven_cavity, start_stop]
-        compiler: ${{ fromJson(needs.parse-strategy.outputs.compiler_matrix).compiler }}
-        mode: ${{ fromJson(needs.parse-strategy.outputs.compiler_matrix).mode }}
       fail-fast: false #Ensures that jobs run in parallel
     needs: build
     name: test-${{ matrix.compiler.name }}-${{ matrix.mode.name }}-${{ matrix.test-name }}
