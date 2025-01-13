@@ -31,7 +31,7 @@ jobs:
           # Export the entire JSON as a single string for reuse
           echo "::set-output name=matrix::$STRATEGY"
           
-          # Parse and print compilers and modes in Bash (no ${{ ... }} here)
+          # Parse and print compilers and modes in Bash
           COMPILERS=$(echo $STRATEGY | jq -c '.compiler')
           echo "INFO: Compilers are: $COMPILERS"
 
