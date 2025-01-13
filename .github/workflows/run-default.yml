@@ -38,11 +38,7 @@ jobs:
           fi
 
           # Export the entire JSON as a single string for reuse
-          # Save the adjusted matrix to a file for output
-          echo "$STRATEGY" > matrix.json
-
-          # Export the matrix for other jobs
-          echo "matrix=$(cat matrix.json)" >> $GITHUB_ENV
+          echo "::set-output name=matrix::$STRATEGY"
           
           # Parse and print compilers and modes in Bash
           COMPILERS=$(echo $STRATEGY | jq -c '.compiler')
@@ -58,8 +54,8 @@ jobs:
     needs: parse-matrix
     strategy:
       matrix:
-        compiler: ${{ fromJson(env.matrix).compiler }}
-        mode: ${{ fromJson(env.matrix).mode }}
+        compiler: ${{ fromJson(needs.parse-matrix.outputs.compiler_matrix).compiler }}
+        mode: ${{ fromJson(needs.parse-matrix.outputs.compiler_matrix).mode }}
 
       fail-fast: false #Ensures that jobs run in parallel
     name: build-${{ matrix.compiler.name }}-${{ matrix.mode.name }}
@@ -121,8 +117,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        compiler: ${{ fromJson(env.matrix).compiler }}
-        mode: ${{ fromJson(env.matrix).mode }}
+        compiler: ${{ fromJson(needs.parse-matrix.outputs.compiler_matrix).compiler }}
+        mode: ${{ fromJson(needs.parse-matrix.outputs.compiler_matrix).mode }}
         test-name: [lid_driven_cavity, start_stop]
       fail-fast: false #Ensures that jobs run in parallel
     needs: build
