@@ -2,22 +2,40 @@ name: run-default
 
 on:
   - pull_request
-#  - push
+  - push
+
+env:
+  {
+    "compiler": [
+      { "name": "GNU" },
+      { "name": "NVIDIA", "version": "24.11", "year": 2024 },
+      { "name": "INTEL", "intel_version": "2024.0.0.49564", "hpc_version": "2024.0.0.49589" }
+    ],
+  }
 
 jobs:
+  parse-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      compiler_matrix: ${{ steps.export-matrix.outputs.matrix }}
+    steps:
+      - name: Parse and prepare compiler strategy
+        id: export-matrix
+        shell: bash
+        run: |
+          # Extract JSON from the global COMPILER_MATRIX
+          STRATEGY=$(echo $COMPILER_MATRIX | jq -c '.')
+
+          # Export the entire JSON as a single string for reuse
+          echo "::set-output name=matrix::$STRATEGY"
+
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    needs: parse-matrix
     strategy:
       matrix:
-        compiler:
-        - name: GNU
-        - name: NVIDIA
-          version: "24.11"
-          year: 2024
-        - name: INTEL
-          intel_version: 2024.0.0.49564
-          hpc_version: 2024.0.0.49589
+        compiler: ${{ fromJson(needs.parse-strategy.outputs.compiler_matrix).compiler }}
         compiler_flags:
         - name: "Default"
           flags: ""
@@ -92,12 +110,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+
         test-name: [lid_driven_cavity, start_stop]
-        compiler:
-        - name: GNU
-        - name: INTEL
-        - name: NVIDIA
-        #  version: "24.11" 
+        compiler: ${{ fromJson(needs.parse-strategy.outputs.compiler_matrix).compiler }}
         compiler_flags:
         - name: "Default"
           flags: ""
