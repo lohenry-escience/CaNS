@@ -31,9 +31,14 @@ jobs:
           # Export the entire JSON as a single string for reuse
           echo "::set-output name=matrix::$STRATEGY"
           
-          # Echo the variables
-          echo "INFO: Compilers are: "${{ fromJson($STRATEGY).compiler }}
-          echo "INFO: Modes are: "${{ fromJson($STRATEGY).mode }}
+          # Parse and print compilers and modes in Bash (no ${{ ... }} here)
+          COMPILERS=$(echo $STRATEGY | jq -c '.compiler')
+          echo "INFO: Compilers are: $COMPILERS"
+
+          # If 'mode' exists in JSON, print it; otherwise, handle gracefully
+          MODES=$(echo $STRATEGY | jq -r '.mode')
+          echo "INFO: Modes are: $MODES"
+
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 20
