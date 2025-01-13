@@ -6,13 +6,13 @@ on:
 
 env:
   COMPILER_MATRIX : >-
-  {
-    "compiler": [
-      { "name": "GNU" },
-      { "name": "NVIDIA", "version": "24.11", "year": 2024 },
-      { "name": "INTEL", "intel_version": "2024.0.0.49564", "hpc_version": "2024.0.0.49589" }
-    ],
-  }
+    {
+      "compiler": [
+        { "name": "GNU" },
+        { "name": "NVIDIA", "version": "24.11", "year": 2024 },
+        { "name": "INTEL", "intel_version": "2024.0.0.49564", "hpc_version": "2024.0.0.49589" }
+      ]
+    }
 
 jobs:
   parse-matrix:
