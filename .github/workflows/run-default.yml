@@ -121,13 +121,13 @@ jobs:
   test:
     timeout-minutes: 20
     runs-on: ubuntu-latest
+    needs: [build, parse-matrix]
     strategy:
       matrix:
         compiler: ${{ fromJson(needs.parse-matrix.outputs.compiler_matrix).compiler }}
         mode: ${{ fromJson(needs.parse-matrix.outputs.compiler_matrix).mode }}
         test-name: [lid_driven_cavity, start_stop]
       fail-fast: false #Ensures that jobs run in parallel
-    needs: build
     name: test-${{ matrix.compiler.name }}-${{ matrix.mode.name }}-${{ matrix.test-name }}
     steps:
     - name: Maximize build space
