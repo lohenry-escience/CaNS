@@ -31,6 +31,12 @@ jobs:
           # Extract JSON from the global COMPILER_MATRIX
           STRATEGY=$(echo $COMPILER_MATRIX | jq -c '.')
 
+          # Default to GNU for push-triggered workflows
+          if [ "${{ github.event_name }}" == "push" ]; then
+            # If triggered by a push, only use the "GNU" compiler
+            STRATEGY=$(echo "$STRATEGY" | jq '.compiler = [{"name": "GNU"}]')
+          fi
+
           # Export the entire JSON as a single string for reuse
           echo "::set-output name=matrix::$STRATEGY"
           
