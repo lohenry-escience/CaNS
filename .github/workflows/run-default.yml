@@ -12,7 +12,10 @@ env:
         { "name": "NVIDIA", "version": "24.11", "year": 2024 },
         { "name": "INTEL", "intel_version": "2024.0.0.49564", "hpc_version": "2024.0.0.49589" }
       ],
-      "mode": [{ "name": "opt", "flags": "" }, { "name": "dbg", "flags": "" }]
+      "mode": [
+        { "name": "opt", "flags": "" },
+        { "name": "dbg", "flags": "" }
+      ]
     }
 
 jobs:
@@ -45,8 +48,8 @@ jobs:
     needs: parse-matrix
     strategy:
       matrix:
-        compiler: ${{ fromJson(needs.parse-strategy.outputs.compiler_matrix).compiler }}
-        mode: ${{ fromJson(needs.parse-strategy.outputs.compiler_matrix).mode }}
+        compiler: ${{ fromJson(needs.parse-matrix.outputs.compiler_matrix).compiler }}
+        mode: ${{ fromJson(needs.parse-matrix.outputs.compiler_matrix).mode }}
 
       fail-fast: false #Ensures that jobs run in parallel
     name: build-${{ matrix.compiler.name }}-${{ matrix.mode.name }}
