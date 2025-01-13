@@ -5,7 +5,17 @@ on:
   - push
 
 env:
-  COMPILER_MATRIX : >-
+  FAST_MATRIX : >-
+    {
+      "compiler": [
+        { "name": "GNU" },
+      ],
+      "mode": [
+        { "name": "opt", "flags": "" },
+        { "name": "dbg", "flags": "" }
+      ]
+    }
+  FULL_MATRIX : >-
     {
       "compiler": [
         { "name": "GNU" },
@@ -29,16 +39,13 @@ jobs:
         shell: bash
         run: |
           # Extract JSON from the global COMPILER_MATRIX
-          STRATEGY=$(echo $COMPILER_MATRIX | jq -c '.')
-
-          # Default to GNU for push-triggered workflows
           if [ "${GITHUB_EVENT_NAME}" == "push" ]; then
-            # If triggered by a push, only use the "GNU" compiler
-            STRATEGY=$(echo "$STRATEGY" | jq '.compiler = [{"name": "GNU"}]')
+            STRATEGY=$(echo $FAST_MATRIX | jq -c '.')
+          else
+            STRATEGY=$(echo $FULL_MATRIX | jq -c '.')
           fi
           # Export the entire JSON as a single string for reuse
-          printf "matrix=%s\n" "$STRATEGY" >> "$GITHUB_OUTPUT"
-          
+          echo "matrix=$STRATEGY" >> "$GITHUB_OUTPUT"          
           # Parse and print compilers and modes in Bash
           COMPILERS=$(echo $STRATEGY | jq -c '.compiler')
           echo "INFO: Compilers are: $COMPILERS"
