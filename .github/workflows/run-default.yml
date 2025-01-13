@@ -5,6 +5,7 @@ on:
   - push
 
 env:
+  COMPILER_MATRIX : >-
   {
     "compiler": [
       { "name": "GNU" },
