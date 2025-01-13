@@ -32,13 +32,10 @@ jobs:
           STRATEGY=$(echo $COMPILER_MATRIX | jq -c '.')
 
           # Default to GNU for push-triggered workflows
-          echo $STRATEGY
-          #if [ "${GITHUB_EVENT_NAME}" == "push" ]; then
-          #  # If triggered by a push, only use the "GNU" compiler
-          #  STRATEGY=$(echo "$STRATEGY" | jq '.compiler = [{"name": "GNU"}]')
-          #fi
-          echo "AFTER:"
-          echo $STRATEGY
+          if [ "${GITHUB_EVENT_NAME}" == "push" ]; then
+            # If triggered by a push, only use the "GNU" compiler
+            STRATEGY=$(echo "$STRATEGY" | jq '.compiler = [{"name": "GNU"}]')
+          fi
           # Export the entire JSON as a single string for reuse
           echo "matrix=$STRATEGY" >> $GITHUB_OUTPUT
           
