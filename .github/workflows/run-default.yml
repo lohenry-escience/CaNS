@@ -37,7 +37,7 @@ jobs:
             STRATEGY=$(echo "$STRATEGY" | jq '.compiler = [{"name": "GNU"}]')
           fi
           # Export the entire JSON as a single string for reuse
-          echo "matrix=$STRATEGY" >> $GITHUB_OUTPUT
+          printf "matrix=%s\n" "$STRATEGY" >> "$GITHUB_OUTPUT"
           
           # Parse and print compilers and modes in Bash
           COMPILERS=$(echo $STRATEGY | jq -c '.compiler')
