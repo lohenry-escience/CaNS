@@ -10,6 +10,9 @@ inputs:
   mode:
     description: "opt(imal) or d(e)b(u)g build"
     required: true
+  no-rebuild:
+    description: "Do not rebuild CaNS and libraries"
+    default: false
   compiler_version:
     description: "The version of the compiler."
     required: false

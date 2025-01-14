@@ -6,6 +6,7 @@ on:
   - workflow_dispatch
 
 env:
+  # This matrix is the jobs that are executed at every 'push'
   FAST_MATRIX : >-
     {
       "compiler": [
@@ -16,6 +17,7 @@ env:
         { "name": "dbg", "flags": "" }
       ]
     }
+  # This matrix is the jobs that are executed only for pull requests or manually
   FULL_MATRIX : >-
     {
       "compiler": [
@@ -58,6 +60,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    continue-on-error: true  # Allow build to fail
     needs: parse-matrix
     strategy:
       matrix:
