@@ -14,7 +14,7 @@ env:
       ],
       "mode": [
         { "name": "opt", "flags": "" },
-        { "name": "dbg", "flags": " FFLAGS_DEBUG_MAX=1 " }
+        { "name": "dbg", "flags": " FFLAGS_DEBUG_MAX=1 FFLAGS_OPT=0 " }
       ]
     }
   # This matrix is the jobs that are executed only for pull requests or manually
