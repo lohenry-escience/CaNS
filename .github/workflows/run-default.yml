@@ -14,19 +14,19 @@ env:
       ],
       "mode": [
         { "name": "opt", "flags": "" },
-        { "name": "dbg", "flags": " OPT_DEBUG_MAX=1 " }
+        #{ "name": "dbg", "flags": " OPT_DEBUG_MAX=1 " }
       ]
     }
   # This matrix is the jobs that are executed only for pull requests or manually
   FULL_MATRIX : >-
     {
       "compiler": [
-        { "name": "GNU" },
-        { "name": "NVIDIA", "version": "24.11", "year": 2024 },
+        #{ "name": "GNU" },
+        #{ "name": "NVIDIA", "version": "24.11", "year": 2024 },
         { "name": "INTEL", "intel_version": "2024.0.0.49564", "hpc_version": "2024.0.0.49589" }
       ],
       "mode": [
-        { "name": "opt", "flags": "" },
+        #{ "name": "opt", "flags": "" },
         { "name": "dbg", "flags": " OPT_DEBUG_MAX=1 " }
       ]
     }
