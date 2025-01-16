@@ -14,7 +14,7 @@ env:
       ],
       "mode": [
         { "name": "opt", "flags": "" },
-        { "name": "dbg", "flags": " OPT_DEBUG_MAX=1 " }
+        { "name": "dbg", "flags": " FFLAGS_DEBUG_MAX=1 " }
       ]
     }
   # This matrix is the jobs that are executed only for pull requests or manually
@@ -36,7 +36,7 @@ env:
         { "name": "INTEL", "intel_version": "2024.0.0.49564", "hpc_version": "2024.0.0.49589" }
       ],
       "mode": [
-        { "name": "dbg", "flags": " OPT_DEBUG_MAX=1 " }
+        { "name": "dbg", "flags": " FFLAGS_DEBUG_MAX=1 " }
       ]
     }
 
