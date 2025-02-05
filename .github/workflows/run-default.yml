@@ -80,7 +80,14 @@ jobs:
     steps:
     # TODO: Lots of repetition here on setting up the environments.
     - name: Check Disk Usage
-      run: df -h; ./tests/scripts/freespace.sh
+      run: df -h
+    - name: Getting CaNS
+      uses: actions/checkout@v4
+      with:
+        submodules: true
+    - name: Check Disk Usage
+      shell: bash  # Specify the shell explicitly
+      run: ./tests/scripts/freespace.sh
     #- name: Maximize build space
     #  # TODO: make it local
     #  # From https://github.com/marketplace/actions/maximize-build-disk-space
@@ -95,10 +102,10 @@ jobs:
     #    remove-haskell: 'true'
     #    remove-docker-images: 'true'
     #    remove-android: 'true'
-    - name: Getting CaNS
-      uses: actions/checkout@v4
-      with:
-        submodules: true
+    #- name: Getting CaNS
+    #  uses: actions/checkout@v4
+    #  with:
+    #    submodules: true
     - name: Cache NVIDIA Compiler Suite
       uses: actions/cache@v3
       with:
