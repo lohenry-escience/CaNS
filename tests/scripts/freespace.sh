@@ -10,7 +10,6 @@ packages=(
     '^aspnetcore.*'
     '^azure.*'
     '^containerd.*'
-    '^docker.*'
     '^dotnet.*'
     '^firebird.*'
     '^firefox.*'
