@@ -111,12 +111,12 @@ jobs:
       shell: bash  # Specify the shell explicitly
       # TODO: avoid the if?
       run: |
-        if [ ! -d "/opt/nvidia" ]; then
-          wget -q https://developer.download.nvidia.com/toolkit/latest.tar.gz -O /tmp/nvidia.tar.gz
-          mkdir -p /opt/nvidia
-          tar -xzf /tmp/nvidia.tar.gz -C /opt/nvidia
-        fi
-	ls /opt/nvidia
+           if [ ! -d "/opt/nvidia" ]; then
+             wget -q https://developer.download.nvidia.com/toolkit/latest.tar.gz -O /tmp/nvidia.tar.gz
+             mkdir -p /opt/nvidia
+             tar -xzf /tmp/nvidia.tar.gz -C /opt/nvidia
+           fi
+           ls /opt/nvidia
     - name: Compile dependencies
       run: |
            source ./tests/scripts/setenv-${{ matrix.compiler.name }}.sh
