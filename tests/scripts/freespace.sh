@@ -46,12 +46,12 @@ free -h
 swapon --summary
 swapon --show
 
-
 echo "Removing unwanted software... "
 sudo rm -rf /usr/share/dotnet
 sudo rm -rf /usr/local/lib/android
 sudo rm -rf /opt/ghc
 sudo rm -rf /opt/hostedtoolcache/CodeQL
+
 df -h
 
 #sudo fallocate -l 5G /swapfile2

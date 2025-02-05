@@ -1,6 +1,11 @@
 # store owner of $GITHUB_WORKSPACE in case the action deletes it
 WORKSPACE_OWNER="$(stat -c '%U:%G' "${GITHUB_WORKSPACE}")"
 
+BUILD_MOUNT_PATH=""
+if [[ -z "${BUILD_MOUNT_PATH}" ]]; then
+    BUILD_MOUNT_PATH="${GITHUB_WORKSPACE}"
+fi
+
 # ensure mount path exists before the action
 sudo mkdir -p "${BUILD_MOUNT_PATH}"
 sudo find "${BUILD_MOUNT_PATH}" -maxdepth 0 ! -empty -exec echo 'WARNING: directory [{}] is not empty, data loss might occur. Content:' \; -exec ls -al "{}" \;
