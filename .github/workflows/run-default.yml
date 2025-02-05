@@ -106,7 +106,6 @@ jobs:
            if [ ! -d "/opt/nvidia" ]; then
              source ./tests/scripts/install-NVIDIA.sh
            fi
-           ls /opt/nvidia
     - name: Compile dependencies
       run: |
            source ./tests/scripts/setenv-${{ matrix.compiler.name }}.sh
