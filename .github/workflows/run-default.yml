@@ -117,7 +117,6 @@ jobs:
           tar -xzf /tmp/nvidia.tar.gz -C /opt/nvidia
         fi
 	ls /opt/nvidia
-	/opt/nvidia/
     - name: Compile dependencies
       run: |
            source ./tests/scripts/setenv-${{ matrix.compiler.name }}.sh
