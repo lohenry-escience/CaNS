@@ -88,24 +88,24 @@ jobs:
     - name: Check Disk Usage
       shell: bash  # Specify the shell explicitly
       run: source ./tests/scripts/freespace.sh
-    #- name: Maximize build space
-    #  # TODO: make it local
-    #  # From https://github.com/marketplace/actions/maximize-build-disk-space
-    #  # The important stuff is to resize the partitions. Removals do not do much, if anything
-    #  # Check if it works without the rm -f
-    #  if: matrix.compiler.name == 'NVIDIA'
-    #  uses: easimon/maximize-build-space@master
-    #  with:
-    #    root-reserve-mb: 25000
-    #    swap-size-mb: 30000
-    #    remove-dotnet: 'true'
-    #    remove-haskell: 'true'
-    #    remove-docker-images: 'true'
-    #    remove-android: 'true'
-    #- name: Getting CaNS
-    #  uses: actions/checkout@v4
-    #  with:
-    #    submodules: true
+    - name: Maximize build space
+      # TODO: make it local
+      # From https://github.com/marketplace/actions/maximize-build-disk-space
+      # The important stuff is to resize the partitions. Removals do not do much, if anything
+      # Check if it works without the rm -f
+      if: matrix.compiler.name == 'NVIDIA'
+      uses: easimon/maximize-build-space@master
+      with:
+        root-reserve-mb: 25000
+        swap-size-mb: 30000
+        remove-dotnet: 'true'
+        remove-haskell: 'true'
+        remove-docker-images: 'true'
+        remove-android: 'true'
+    - name: Getting CaNS
+      uses: actions/checkout@v4
+      with:
+        submodules: true
     - name: Cache NVIDIA Compiler Suite
       uses: actions/cache@v3
       with:
