@@ -13,8 +13,8 @@ env:
         { "name": "NVIDIA" }
       ],
       "mode": [
-        { "name": "opt", "flags": "" },
-        { "name": "dbg", "flags": " FFLAGS_DEBUG_MAX=1 FFLAGS_OPT=0 " }
+        { "name": "opt", "flags": "" }#,
+        #{ "name": "dbg", "flags": " FFLAGS_DEBUG_MAX=1 FFLAGS_OPT=0 " }
       ]
     }
   # This matrix is the jobs that are executed only for pull requests or manually
@@ -82,20 +82,20 @@ jobs:
     # TODO: Lots of repetition here on setting up the environments.
     - name: Check Disk Usage
       run: df -h
-    - name: Maximize build space
-      # TODO: make it local
-      # From https://github.com/marketplace/actions/maximize-build-disk-space
-      # The important stuff is to resize the partitions. Removals do not do much, if anything
-      # Check if it works without the rm -f
-      if: matrix.compiler.name == 'NVIDIA'
-      uses: easimon/maximize-build-space@master
-      with:
-        root-reserve-mb: 25000
-        swap-size-mb: 30000
-        remove-dotnet: 'true'
-        remove-haskell: 'true'
-        remove-docker-images: 'true'
-        remove-android: 'true'
+    #- name: Maximize build space
+    #  # TODO: make it local
+    #  # From https://github.com/marketplace/actions/maximize-build-disk-space
+    #  # The important stuff is to resize the partitions. Removals do not do much, if anything
+    #  # Check if it works without the rm -f
+    #  if: matrix.compiler.name == 'NVIDIA'
+    #  uses: easimon/maximize-build-space@master
+    #  with:
+    #    root-reserve-mb: 25000
+    #    swap-size-mb: 30000
+    #    remove-dotnet: 'true'
+    #    remove-haskell: 'true'
+    #    remove-docker-images: 'true'
+    #    remove-android: 'true'
     - name: Getting CaNS
       uses: actions/checkout@v4
       with:
@@ -112,7 +112,7 @@ jobs:
       # TODO: avoid the if?
       run: |
            if [ ! -d "/opt/nvidia" ]; then
-             wget -q https://developer.download.nvidia.com/toolkit/latest.tar.gz -O /tmp/nvidia.tar.gz
+             source ./tests/scripts/install-NVIDIA.sh
              mkdir -p /opt/nvidia
              tar -xzf /tmp/nvidia.tar.gz -C /opt/nvidia
            fi
