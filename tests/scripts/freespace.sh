@@ -10,6 +10,7 @@ packages=(
     '^aspnetcore.*'
     '^azure.*'
     '^containerd.*'
+    '^docker.*'
     '^dotnet.*'
     '^firebird.*'
     '^firefox.*'
@@ -29,6 +30,7 @@ packages=(
     '^snapd.*'
     '^temurin.*'
 )
+sudo docker image prune --all --force
 
 # Loop through each package pattern and remove it
 for pkg in ${packages[@]}; do
@@ -43,6 +45,14 @@ df -h
 free -h
 swapon --summary
 swapon --show
+
+
+echo "Removing unwanted software... "
+sudo rm -rf /usr/share/dotnet
+sudo rm -rf /usr/local/lib/android
+sudo rm -rf /opt/ghc
+sudo rm -rf /opt/hostedtoolcache/CodeQL
+df -h
 
 #sudo fallocate -l 5G /swapfile2
 #sudo chmod 600 /swapfile2
