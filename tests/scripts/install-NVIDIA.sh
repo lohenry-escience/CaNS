@@ -51,16 +51,15 @@ fi
 
 NVVERSION_B=$(echo $NVVERSION_A | sed 's/\.//g')
 NVARCH=`uname -s`_`uname -m`
-wget --progress=dot:giga https://developer.download.nvidia.com/hpc-sdk/${NVVERSION_A}/nvhpc_${NVYEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}.tar.gz -O ./NVIDIA.tar.gz
-mkdir -p /opt/nvidia
+wget --progress=dot:giga https://developer.download.nvidia.com/hpc-sdk/${NVVERSION_A}/nvhpc_${NVYEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}.tar.gz
 echo "INFO: Downloaded the file"
 pwd
 df --output=avail -BG "."
-tar -xpzf ./NVIDIA.tar.gz -C /opt/nvidia
+tar -xpzf nvhpc_${NVYEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}.tar.gz
 echo "INFO: Unpacked the file"
 pwd
 df --output=avail -BG "."
-rm NVIDIA.tar.gz
+rm nvhpc_${NVYEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}.tar.gz
 pwd
 df --output=avail -BG "."
 
@@ -76,5 +75,4 @@ echo
 
 echo "INFO: Installing now"
 df --output=avail -BG "/opt"
-ls -al /opt/nvidia/nvhpc_2024_243_Linux_x86_64_cuda_multi/
-/opt/nvidia/nvhpc_2024_243_Linux_x86_64_cuda_multi/install
+./nvhpc_${NVYEAR}_${NVVERSION_B}_${NVARCH}_cuda_${CUDA_VERSION}/install --help
