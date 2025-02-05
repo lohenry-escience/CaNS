@@ -13,7 +13,7 @@ env:
         { "name": "NVIDIA" }
       ],
       "mode": [
-        { "name": "opt", "flags": "" },
+        { "name": "opt", "flags": "" }
       ]
     }
   # This matrix is the jobs that are executed only for pull requests or manually
