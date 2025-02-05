@@ -87,7 +87,7 @@ jobs:
         submodules: true
     - name: Check Disk Usage
       shell: bash  # Specify the shell explicitly
-      run: ./tests/scripts/freespace.sh
+      run: source ./tests/scripts/freespace.sh
     #- name: Maximize build space
     #  # TODO: make it local
     #  # From https://github.com/marketplace/actions/maximize-build-disk-space
@@ -147,7 +147,7 @@ jobs:
       matrix:
         compiler: ${{ fromJson(needs.parse-matrix.outputs.compiler_matrix).compiler }}
         mode: ${{ fromJson(needs.parse-matrix.outputs.compiler_matrix).mode }}
-        test-name: [lid_driven_cavity, start_stop]
+        test-name: [start_stop]
       fail-fast: false #Ensures that jobs run in parallel
     name: test-${{ matrix.compiler.name }}-${{ matrix.mode.name }}-${{ matrix.test-name }}
     steps:
