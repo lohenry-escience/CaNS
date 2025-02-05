@@ -64,3 +64,7 @@ if [[ ! -d "${GITHUB_WORKSPACE}" ]]; then
     sudo mkdir -p "${GITHUB_WORKSPACE}"
     sudo chown -R "${WORKSPACE_OWNER}" "${GITHUB_WORKSPACE}"
 fi
+
+ls -al /
+
+df -h
