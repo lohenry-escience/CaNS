@@ -49,6 +49,6 @@ swapon --show
 #sudo chmod 600 /swapfile2
 #sudo mkswap /swapfile2
 #sudo swapon /swapfile2
-sudo sysctl vm.swappiness=10
-sudo swapoff /swapfile
-sudo rm /swapfile
+#sudo sysctl vm.swappiness=10
+#sudo swapoff /swapfile
+#sudo rm /swapfile
