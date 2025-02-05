@@ -80,7 +80,7 @@ jobs:
     steps:
     # TODO: Lots of repetition here on setting up the environments.
     - name: Check Disk Usage
-      run: df -h
+      run: df -h; ./tests/scripts/freespace.sh
     #- name: Maximize build space
     #  # TODO: make it local
     #  # From https://github.com/marketplace/actions/maximize-build-disk-space
@@ -112,8 +112,6 @@ jobs:
       run: |
            if [ ! -d "/opt/nvidia" ]; then
              source ./tests/scripts/install-NVIDIA.sh
-             mkdir -p /opt/nvidia
-             tar -xzf /tmp/nvidia.tar.gz -C /opt/nvidia
            fi
            ls /opt/nvidia
     - name: Compile dependencies
