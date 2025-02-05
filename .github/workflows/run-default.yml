@@ -10,7 +10,7 @@ env:
   FAST_MATRIX : >-
     {
       "compiler": [
-        { "name": "GNU" }
+        { "name": "NVIDIA" }
       ],
       "mode": [
         { "name": "opt", "flags": "" },
@@ -100,21 +100,24 @@ jobs:
       uses: actions/checkout@v4
       with:
         submodules: true
+    - name: Cache NVIDIA Compiler Suite
+      uses: actions/cache@v3
+      with:
+        path: /opt/nvidia  # Change this if needed
+        key: nvidia-suite-${{ runner.os }}-${{ hashFiles('**/dependencies.lock') }}
+        restore-keys: |
+          nvidia-suite-${{ runner.os }}-
     - name: Get packages
       shell: bash  # Specify the shell explicitly
       # TODO: avoid the if?
       run: |
-           sudo apt-get update
-           echo "INFO: Installing the ${{ matrix.compiler.name }} compiler"
-           if [ ${{ matrix.compiler.name }} == "NVIDIA" ]
-           then
-             args="YEAR=${{ matrix.compiler.year }} VERSION=${{ matrix.compiler.version }}"
-           fi
-           if [ ${{ matrix.compiler.name }} == "INTEL" ]
-           then
-             args="INTEL_VERSION=${{ matrix.compiler.intel_version}} HPC_VERSION=${{ matrix.compile.hpc_version }}"
-           fi	   
-           source ./tests/scripts/install-${{ matrix.compiler.name }}.sh $args
+        if [ ! -d "/opt/nvidia" ]; then
+          wget -q https://developer.download.nvidia.com/toolkit/latest.tar.gz -O /tmp/nvidia.tar.gz
+          mkdir -p /opt/nvidia
+          tar -xzf /tmp/nvidia.tar.gz -C /opt/nvidia
+        fi
+	ls /opt/nvidia
+	/opt/nvidia/
     - name: Compile dependencies
       run: |
            source ./tests/scripts/setenv-${{ matrix.compiler.name }}.sh
